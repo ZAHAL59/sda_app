@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDA Admin Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --teal: #2bbfbf;
+      --teal-dark: #1a9e9e;
+      --teal-light: #e6f7f7;
+      --green: #2dc48d;
+      --sidebar-w: 230px;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f5f6fa;
+      --white: #ffffff;
+      --gold: #f59e0b;
+      --amber: #f97316;
+      --rose: #ef4444;
+      --violet: #8b5cf6;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 24px;
+    }
+
+    .login-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-logo-text {
+      font-weight: 800;
+      font-size: 0.9rem;
+      line-height: 1.25;
+      color: #1a1a2e;
+    }
+
+    .login-logo-text span {
+      display: block;
+      font-size: 0.72rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .login-card h2 {
+      font-weight: 800;
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+
+    .login-card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .login-field {
+      margin-bottom: 14px;
+    }
+
+    .login-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .login-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .login-input:focus {
+      border-color: #ef4444;
+    }
+
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: filter 0.2s;
+    }
+
+    .login-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .login-error {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.79rem;
+      color: #dc2626;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      transition: transform 0.25s;
+    }
+
+    .sidebar-logo {
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-text span {
+      display: block;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .logo-text .sub {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 500;
+    }
+
+    .sidebar-nav {
+      padding: 16px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.3);
+      padding: 10px 12px 5px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.86rem;
+      color: rgba(255, 255, 255, 0.55);
+      transition: all 0.18s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(185, 28, 28, 0.15));
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .nav-icon {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 200;
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: #ef4444;
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tb-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .tb-logout {
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .tb-logout:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+
+    .tb-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .content {
+      padding: 20px 24px;
+      flex: 1;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeUp 0.25s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ── STAT CARDS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .stat-card.c1::after {
+      background: linear-gradient(90deg, var(--teal), var(--green));
+    }
+
+    .stat-card.c2::after {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    .stat-card.c3::after {
+      background: linear-gradient(90deg, var(--violet), #6366f1);
+    }
+
+    .stat-card.c4::after {
+      background: linear-gradient(90deg, #2dc48d, #0891b2);
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .stat-card.c1 .stat-icon {
+      background: linear-gradient(135deg, #e6f7f7, #d1f5e8);
+    }
+
+    .stat-card.c2 .stat-icon {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+    }
+
+    .stat-card.c3 .stat-icon {
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    }
+
+    .stat-card.c4 .stat-icon {
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    }
+
+    .stat-val {
+      font-weight: 800;
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .stat-card.c1 .stat-val {
+      color: var(--teal);
+    }
+
+    .stat-card.c2 .stat-val {
+      color: #f59e0b;
+    }
+
+    .stat-card.c3 .stat-val {
+      color: var(--violet);
+    }
+
+    .stat-card.c4 .stat-val {
+      color: #2dc48d;
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    /* ── CARDS & TABLES ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+
+    .tbl {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+
+    .tbl th {
+      text-align: left;
+      font-size: 0.69rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      padding: 8px 12px;
+      background: var(--bg);
+    }
+
+    .tbl th:first-child {
+      border-radius: 7px 0 0 7px;
+    }
+
+    .tbl th:last-child {
+      border-radius: 0 7px 7px 0;
+    }
+
+    .tbl td {
+      padding: 12px;
+      font-size: 0.83rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .tbl tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tbl tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .badge-active {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-inactive {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .badge-paid {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .badge-approved {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-rejected {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .badge-processing {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .badge-completed {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-skipped {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--green));
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+    }
+
+    .btn-warning:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #2dc48d, #059669);
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .btn-sm {
+      padding: 5px 11px;
+      font-size: 0.74rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: none !important;
+    }
+
+    /* ── SEARCH / FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 180px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.84rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--teal);
+    }
+
+    .filter-select {
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--text);
+      outline: none;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* ── MODAL ── */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(6px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-bg.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 480px;
+      width: 100%;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.85);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .modal-head h3 {
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .modal-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: var(--bg);
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+
+    .modal-close:hover {
+      background: #fee2e2;
+      color: var(--rose);
+    }
+
+    .form-field {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.86rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--teal);
+    }
+
+    .form-select {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.86rem;
+      color: var(--text);
+      outline: none;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 9px;
+      justify-content: flex-end;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .modal-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: 0.83rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .modal-detail-row .k {
+      color: var(--muted);
+    }
+
+    .modal-detail-row .v {
+      font-weight: 700;
+    }
+
+    .detail-box {
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 11px 16px;
+      border-radius: 9px;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      z-index: 999;
+      pointer-events: none;
+      border: 1px solid rgba(43, 191, 191, 0.4);
+      max-width: 320px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── AGENT CARD (Agents page) ── */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .agent-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      transition: all 0.2s;
+    }
+
+    .agent-card:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .agent-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .agent-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2bbfbf, #1a9ead);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .agent-card-info {
+      flex: 1;
+    }
+
+    .agent-card-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 2px;
+    }
+
+    .agent-card-email {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .agent-card-code {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--teal);
+      font-family: monospace;
+      background: var(--teal-light);
+      padding: 2px 7px;
+      border-radius: 5px;
+      margin-top: 3px;
+      display: inline-block;
+    }
+
+    .agent-stats-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .agent-stat {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 9px;
+      padding: 9px 10px;
+      text-align: center;
+    }
+
+    .agent-stat-val {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .agent-stat-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    .agent-card-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* ── PAYOUT CARD ── */
+    .payout-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s;
+    }
+
+    .payout-card:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    }
+
+    .payout-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2bbfbf, #1a9ead);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .payout-info {
+      flex: 1;
+    }
+
+    .payout-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .payout-bank {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .payout-amt {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--teal);
+      text-align: right;
+    }
+
+    .payout-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .payout-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .payouts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    /* ── DASHBOARD BANNER ── */
+    .dash-banner {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 45%, #0f3460 100%);
+      border-radius: 18px;
+      padding: 26px 30px;
+      color: #fff;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dash-banner::before {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .dash-banner-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .dash-banner-text h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .dash-banner-text p {
+      font-size: 0.83rem;
+      opacity: 0.7;
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .dash-banner-badge {
+      position: relative;
+      z-index: 1;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .admin-badge {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      display: inline-block;
+    }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-credit {
+      background: var(--green);
+    }
+
+    .dot-debit {
+      background: var(--rose);
+    }
+
+    .activity-desc {
+      flex: 1;
+      font-size: 0.82rem;
+    }
+
+    .activity-agent {
+      font-weight: 700;
+    }
+
+    .activity-time {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .activity-amt {
+      font-weight: 800;
+      font-size: 0.86rem;
+    }
+
+    .amt-credit {
+      color: var(--green);
+    }
+
+    .amt-debit {
+      color: var(--rose);
+    }
+
+    /* ── INNER TABS ── */
+    .inner-tabs {
+      display: flex;
+      gap: 5px;
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 4px;
+      margin-bottom: 18px;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .itab {
+      padding: 6px 15px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.81rem;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .itab.active {
+      background: var(--white);
+      color: #ef4444;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .itab-panel {
+      display: none;
+    }
+
+    .itab-panel.active {
+      display: block;
+      animation: fadeUp 0.2s ease;
+    }
+
+    /* ── LOADING ── */
+    .loading-row {
+      text-align: center;
+      padding: 28px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top: 2px solid var(--teal);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* ── REJECT REASON ── */
+    .reject-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.84rem;
+      color: var(--text);
+      outline: none;
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .reject-input:focus {
+      border-color: var(--rose);
+    }
+
+    /* ── BULK PAYOUT HERO ── */
+    .bulk-hero {
+      background: linear-gradient(135deg, #1b4332, #2d6a4f, #40916c);
+      border-radius: 16px;
+      padding: 24px 28px;
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .bulk-hero-text h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .bulk-hero-text p {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .bulk-hero-val {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .bulk-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #86efac;
+    }
+
+    .bulk-sub {
+      font-size: 0.72rem;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .topbar {
+        padding: 14px 16px 14px 60px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .agents-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .payouts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dash-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .bulk-hero {
+        flex-direction: column;
+      }
+
+      .bulk-hero-val {
+        text-align: left;
+      }
+    }
+
+    @media(max-width:480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M16 3L3 10v12l13 7 13-7V10L16 3z" fill="white" opacity="0.9" />
+          </svg>
+        </div>
+        <div class="login-logo-text">Shaheen Digital Academy<span>Admin Portal</span></div>
+      </div>
+      <h2>Admin Sign In 🔐</h2>
+      <p>Access the SDA admin panel to manage agents, payouts and referrals.</p>
+      <div class="login-error" id="login-error"></div>
+      <div class="login-field">
+        <label class="login-label">Admin Email</label>
+        <input class="login-input" id="login-email" type="email" placeholder="admin@shaheendigital.in"
+          value="admin@shaheendigital.in">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <input class="login-input" id="login-password" type="password" placeholder="••••••••" value="admin2025"
+          onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In as Admin</button>
+      <div style="margin-top:14px;text-align:center;font-size:0.74rem;color:var(--muted);">Demo: admin@shaheendigital.in
+        / admin2025</div>
+    </div>
+  </div>
+
+  <!-- Mobile hamburger -->
+  <button class="menu-toggle" onclick="toggleSidebar()" style="display:none;" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  </button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <path d="M16 3L3 10v12l13 7 13-7V10L16 3z" fill="white" opacity="0.9" />
+        </svg>
+      </div>
+      <div class="logo-text"><span>SDA Admin</span><span class="sub">Shaheen Digital Academy</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <button class="nav-item active" onclick="showPage('dashboard',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+        </svg>
+        Dashboard
+      </button>
+      <div class="nav-section-label">Management</div>
+      <button class="nav-item" onclick="showPage('agents',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        Agents
+      </button>
+      <button class="nav-item" onclick="showPage('withdrawals',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        Withdrawals
+      </button>
+      <button class="nav-item" onclick="showPage('payouts',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23" />
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+        Month-End Payouts
+      </button>
+      <button class="nav-item" onclick="showPage('referrals',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Referrals
+      </button>
+    </nav>
+    <div style="padding:12px 14px;border-top:1px solid rgba(255,255,255,0.08);">
+      <div id="api-indicator"
+        style="font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:6px;">
+        <div id="api-dot" style="width:7px;height:7px;border-radius:50%;background:#2dc48d;"></div>
+        <span id="api-text">Connecting…</span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <button class="tb-btn tb-logout" onclick="doLogout()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </button>
+        <div class="tb-avatar">A</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="dash-banner">
+          <div class="dash-banner-text">
+            <h2>🛡️ Admin Control Panel</h2>
+            <p>Monitor agents, approve withdrawals, and run month-end payouts from one place.</p>
+          </div>
+          <div class="dash-banner-badge">
+            <div class="admin-badge">🔐 ADMIN ACCESS</div>
+          </div>
+        </div>
+        <div class="stats-grid" id="dash-stats">
+          <div class="stat-card c1">
+            <div class="stat-icon">👥</div>
+            <div class="stat-val" id="d-agents">—</div>
+            <div class="stat-label">Active Agents</div>
+            <div class="stat-sub" id="d-agents-sub">—</div>
+          </div>
+          <div class="stat-card c2">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-val" id="d-pending">—</div>
+            <div class="stat-label">Pending Withdrawals</div>
+            <div class="stat-sub" id="d-pending-sub">—</div>
+          </div>
+          <div class="stat-card c3">
+            <div class="stat-icon">💸</div>
+            <div class="stat-val" id="d-payout">—</div>
+            <div class="stat-label">Payout Due</div>
+            <div class="stat-sub" id="d-payout-sub">—</div>
+          </div>
+          <div class="stat-card c4">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-val" id="d-refs">—</div>
+            <div class="stat-label">Total Referrals</div>
+            <div class="stat-sub" id="d-refs-sub">—</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="card" style="margin-bottom:0;">
+            <div class="section-header">
+              <div class="section-title">⚡ Recent Activity</div><button class="btn btn-ghost btn-sm"
+                onclick="loadActivity()">Refresh</button>
+            </div>
+            <div id="activity-feed">
+              <div class="loading-row"><span class="spinner"></span>Loading…</div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:0;">
+            <div class="section-header">
+              <div class="section-title">⏳ Pending Withdrawals</div><button class="btn btn-ghost btn-sm"
+                onclick="showPage('withdrawals',document.querySelectorAll('.nav-item')[3])">View All</button>
+            </div>
+            <div id="dash-pending-wrs">
+              <div class="loading-row"><span class="spinner"></span>Loading…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AGENTS ── -->
+      <div class="page" id="page-agents">
+        <div class="section-header">
+          <div class="section-title">👥 All Agents</div>
+          <div class="section-actions">
+            <button class="btn btn-primary" onclick="openAddAgentModal()">+ Add Agent</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <input class="search-input" id="agent-search" placeholder="Search by name, email or code…"
+            oninput="renderAgentCards()">
+          <select class="filter-select" id="agent-status-filter" onchange="renderAgentCards()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadAgents()">↻ Refresh</button>
+        </div>
+        <div id="agents-container" class="agents-grid">
+          <div class="loading-row" style="grid-column:1/-1;"><span class="spinner"></span>Loading agents…</div>
+        </div>
+      </div>
+
+      <!-- ── WITHDRAWALS ── -->
+      <div class="page" id="page-withdrawals">
+        <div class="section-header">
+          <div class="section-title">🏦 Withdrawal Requests</div>
+          <div class="section-actions">
+            <select class="filter-select" id="wr-status-filter" onchange="renderWithdrawals()">
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadWithdrawals()">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="card">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Req ID</th>
+                <th>Agent</th>
+                <th>Code</th>
+                <th>Points</th>
+                <th>Amount</th>
+                <th>Bank</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="wr-tbody">
+              <tr>
+                <td colspan="9" class="loading-row"><span class="spinner"></span>Loading…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── MONTH-END PAYOUTS ── -->
+      <div class="page" id="page-payouts">
+        <div class="bulk-hero">
+          <div class="bulk-hero-text">
+            <h3>💰 Month-End Payout Centre</h3>
+            <p>Review all agents with outstanding balances and confirm or skip their month-end payouts. Use "Pay All" to
+              bulk-process eligible agents at once.</p>
+          </div>
+          <div class="bulk-hero-val">
+            <div class="bulk-val" id="payout-total-val">₹—</div>
+            <div class="bulk-sub">Total payout due this month</div>
+            <button class="btn btn-success" style="margin-top:10px;" onclick="confirmBulkPayout()">💸 Pay All
+              Eligible</button>
+          </div>
+        </div>
+
+        <div class="inner-tabs">
+          <button class="itab active" id="itab-due" onclick="switchPayoutTab('due')">⏰ Payout Due</button>
+          <button class="itab" id="itab-history" onclick="switchPayoutTab('history')">📋 Payout History</button>
+        </div>
+
+        <div class="itab-panel active" id="itab-panel-due">
+          <div id="payout-due-grid" class="payouts-grid">
+            <div class="loading-row" style="grid-column:1/-1;"><span class="spinner"></span>Loading…</div>
+          </div>
+        </div>
+        <div class="itab-panel" id="itab-panel-history">
+          <div class="card">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Payout ID</th>
+                  <th>Agent</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="payout-history-tbody">
+                <tr>
+                  <td colspan="6" class="loading-row"><span class="spinner"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── REFERRALS ── -->
+      <div class="page" id="page-referrals">
+        <div class="section-header">
+          <div class="section-title">🎯 All Referrals</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadReferrals()">↻ Refresh</button>
+        </div>
+        <div class="card">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Ref ID</th>
+                <th>Agent</th>
+                <th>Student</th>
+                <th>Plan</th>
+                <th>Amount Paid</th>
+                <th>Points</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="referrals-tbody">
+              <tr>
+                <td colspan="8" class="loading-row"><span class="spinner"></span>Loading…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- ADD AGENT MODAL -->
+  <div class="modal-bg" id="add-agent-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>➕ Add New Agent</h3><button class="modal-close" onclick="closeModal('add-agent-modal')">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field"><label class="form-label">Full Name *</label><input class="form-input" id="new-name"
+            placeholder="Ebin Alex"></div>
+        <div class="form-field"><label class="form-label">Email *</label><input class="form-input" id="new-email"
+            type="email" placeholder="agent@email.com"></div>
+        <div class="form-field"><label class="form-label">Phone</label><input class="form-input" id="new-phone"
+            type="tel" placeholder="9876543210"></div>
+        <div class="form-field"><label class="form-label">Password</label><input class="form-input" id="new-password"
+            type="text" placeholder="agent123" value="agent123"></div>
+        <div class="form-field" style="grid-column:1/-1;"><label class="form-label">Referral Code</label><input
+            class="form-input" id="new-code" placeholder="Auto-generated if blank"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('add-agent-modal')">Cancel</button>
+        <button class="btn btn-primary" id="add-agent-btn" onclick="addAgent()">Create Agent</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT AGENT MODAL -->
+  <div class="modal-bg" id="edit-agent-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>✏️ Edit Agent</h3><button class="modal-close" onclick="closeModal('edit-agent-modal')">✕</button>
+      </div>
+      <input type="hidden" id="edit-agent-id">
+      <div class="form-grid">
+        <div class="form-field"><label class="form-label">Full Name</label><input class="form-input" id="edit-name">
+        </div>
+        <div class="form-field"><label class="form-label">Phone</label><input class="form-input" id="edit-phone"></div>
+        <div class="form-field"><label class="form-label">Referral Code</label><input class="form-input" id="edit-code">
+        </div>
+        <div class="form-field"><label class="form-label">Status</label><select class="form-select" id="edit-status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('edit-agent-modal')">Cancel</button>
+        <button class="btn btn-primary" id="edit-agent-btn" onclick="saveEditAgent()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANUAL POINTS MODAL -->
+  <div class="modal-bg" id="points-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>⭐ Manual Points Adjustment</h3><button class="modal-close" onclick="closeModal('points-modal')">✕</button>
+      </div>
+      <input type="hidden" id="pts-agent-id">
+      <div id="pts-agent-name" style="font-size:0.84rem;color:var(--muted);margin-bottom:16px;"></div>
+      <div class="form-grid">
+        <div class="form-field"><label class="form-label">Points Amount *</label><input class="form-input"
+            id="pts-amount" type="number" placeholder="1000" min="1"></div>
+        <div class="form-field"><label class="form-label">Type *</label><select class="form-select" id="pts-type">
+            <option value="credit">Credit (+)</option>
+            <option value="debit">Debit (-)</option>
+          </select></div>
+        <div class="form-field" style="grid-column:1/-1;"><label class="form-label">Reason *</label><input
+            class="form-input" id="pts-reason" placeholder="e.g. Bonus for top performer"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('points-modal')">Cancel</button>
+        <button class="btn btn-warning" id="pts-btn" onclick="savePoints()">Apply Points</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT DETAIL MODAL -->
+  <div class="modal-bg" id="agent-detail-modal">
+    <div class="modal" style="max-width:540px;">
+      <div class="modal-head">
+        <h3 id="detail-modal-title">Agent Details</h3><button class="modal-close"
+          onclick="closeModal('agent-detail-modal')">✕</button>
+      </div>
+      <div id="agent-detail-content"></div>
+      <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('agent-detail-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WR APPROVE MODAL -->
+  <div class="modal-bg" id="wr-approve-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>✅ Approve Withdrawal</h3><button class="modal-close" onclick="closeModal('wr-approve-modal')">✕</button>
+      </div>
+      <div class="detail-box" id="wr-approve-detail"></div>
+      <p style="font-size:0.83rem;color:var(--muted);margin-bottom:16px;">Approving will deduct these points from the
+        agent's balance and mark payment as completed.</p>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('wr-approve-modal')">Cancel</button>
+        <button class="btn btn-success" id="wr-approve-btn" onclick="confirmApproveWR()">✅ Confirm Approval</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WR REJECT MODAL -->
+  <div class="modal-bg" id="wr-reject-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>❌ Reject Withdrawal</h3><button class="modal-close" onclick="closeModal('wr-reject-modal')">✕</button>
+      </div>
+      <div class="detail-box" id="wr-reject-detail"></div>
+      <div class="form-field"><label class="form-label">Reason for Rejection</label><textarea class="reject-input"
+          id="wr-reject-reason" placeholder="e.g. Incorrect bank details provided"></textarea></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('wr-reject-modal')">Cancel</button>
+        <button class="btn btn-danger" id="wr-reject-btn" onclick="confirmRejectWR()">❌ Reject Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYOUT CONFIRM MODAL -->
+  <div class="modal-bg" id="payout-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>💸 Confirm Payout</h3><button class="modal-close" onclick="closeModal('payout-modal')">✕</button>
+      </div>
+      <div class="detail-box" id="payout-modal-detail"></div>
+      <p style="font-size:0.83rem;color:var(--muted);margin-bottom:16px;">This will mark the month-end payout as
+        completed and reset the agent's balance to zero.</p>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('payout-modal')">Cancel</button>
+        <button class="btn btn-success" id="payout-confirm-btn" onclick="confirmPayout()">Confirm Payment Sent</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKIP PAYOUT MODAL -->
+  <div class="modal-bg" id="skip-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>⏭️ Skip Payout</h3><button class="modal-close" onclick="closeModal('skip-modal')">✕</button>
+      </div>
+      <div class="detail-box" id="skip-modal-detail"></div>
+      <div class="form-field"><label class="form-label">Reason</label><textarea class="reject-input" id="skip-reason"
+          placeholder="e.g. No bank details, carry forward to next month"></textarea></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('skip-modal')">Cancel</button>
+        <button class="btn btn-warning" id="skip-btn" onclick="confirmSkip()">Skip This Payout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ══════════════════════════════════
+       CONFIG
+    ══════════════════════════════════ */
+    const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:4000'
+      : 'https://api.shaheendigital.in';
+
+    let TOKEN = localStorage.getItem('sda_admin_token');
+
+    /* ── API helper ── */
+    async function api(method, path, body) {
+      const opts = {
+        method,
+        headers: { 'Content-Type': 'application/json', ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}) }
+      };
+      if (body) opts.body = JSON.stringify(body);
+      const r = await fetch(BASE_URL + path, opts);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'API error');
+      setApiStatus(true);
+      return data;
+    }
+
+    function setApiStatus(ok) {
+      document.getElementById('api-dot').style.background = ok ? '#2dc48d' : '#ef4444';
+      document.getElementById('api-text').textContent = ok ? 'API Live' : 'API Offline';
+    }
+
+    /* ── Toast ── */
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    /* ── Modal helpers ── */
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+
+    /* ── Nav ── */
+    function showPage(name, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.getElementById('page-title').textContent = { dashboard: 'Dashboard', agents: 'Agents', withdrawals: 'Withdrawals', payouts: 'Month-End Payouts', referrals: 'Referrals' }[name] || name;
+      if (btn) btn.classList.add('active');
+      if (window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+      if (name === 'dashboard') loadDashboard();
+      if (name === 'agents') loadAgents();
+      if (name === 'withdrawals') loadWithdrawals();
+      if (name === 'payouts') loadPayouts();
+      if (name === 'referrals') loadReferrals();
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    }
+
+    function switchPayoutTab(tab) {
+      ['due', 'history'].forEach(t => {
+        document.getElementById('itab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('itab-panel-' + t).classList.toggle('active', t === tab);
+      });
+      if (tab === 'history') loadPayoutHistory();
+    }
+
+    /* ── Utils ── */
+    function initials(name) { return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(); }
+    function money(pts) { return '₹' + parseInt(pts).toLocaleString('en-IN'); }
+
+    /* ══════════════════════════════════
+       AUTH
+    ══════════════════════════════════ */
+    async function doLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+      btn.textContent = 'Signing in…'; btn.disabled = true;
+      try {
+        const data = await api('POST', '/api/admin/login', { email, password });
+        if (data.role !== 'admin') throw new Error('Not an admin account');
+        TOKEN = data.token;
+        localStorage.setItem('sda_admin_token', TOKEN);
+        document.getElementById('login-screen').style.display = 'none';
+        document.querySelector('.menu-toggle').style.display = '';
+        initPortal();
+      } catch (e) {
+        errEl.textContent = e.message; errEl.style.display = 'block';
+      } finally {
+        btn.textContent = 'Sign In as Admin'; btn.disabled = false;
+      }
+    }
+
+    function doLogout() {
+      TOKEN = null;
+      localStorage.removeItem('sda_admin_token');
+      location.reload();
+    }
+
+    /* ══════════════════════════════════
+       STATE
+    ══════════════════════════════════ */
+    let AGENTS = [], WITHDRAWALS = [], PAYOUTS = [];
+    let currentWRId = null, currentAgentId = null;
+
+    /* ══════════════════════════════════
+       INIT
+    ══════════════════════════════════ */
+    function initPortal() {
+      loadDashboard();
+      loadAgents();
+    }
+
+    /* ══════════════════════════════════
+       DASHBOARD
+    ══════════════════════════════════ */
+    async function loadDashboard() {
+      try {
+        const [stats] = await Promise.all([api('GET', '/api/dashboard/stats')]);
+        document.getElementById('d-agents').textContent = stats.activeAgents;
+        document.getElementById('d-agents-sub').textContent = `of ${stats.totalAgents} total agents`;
+        document.getElementById('d-pending').textContent = stats.pendingWithdrawals;
+        document.getElementById('d-pending-sub').textContent = `${money(stats.pendingWithdrawalsTotal)} pending`;
+        document.getElementById('d-payout').textContent = money(stats.payoutDue);
+        document.getElementById('d-payout-sub').textContent = `${stats.eligibleAgents} eligible agents`;
+        document.getElementById('d-refs').textContent = stats.totalReferrals;
+        document.getElementById('d-refs-sub').textContent = `Paid out this month: ${money(stats.paidThisMonth)}`;
+        loadActivity();
+        loadDashPendingWRs();
+      } catch (e) { setApiStatus(false); toast('⚠️ ' + e.message); }
+    }
+
+    async function loadActivity() {
+      try {
+        const data = await api('GET', '/api/activity');
+        const feed = data.feed || [];
+        const el = document.getElementById('activity-feed');
+        if (!feed.length) { el.innerHTML = '<div class="loading-row" style="color:var(--muted)">No activity yet</div>'; return; }
+        el.innerHTML = feed.map(f => `
+      <div class="activity-item">
+        <div class="activity-dot ${f.type === 'credit' ? 'dot-credit' : 'dot-debit'}"></div>
+        <div class="activity-desc">
+          <span class="activity-agent">${f.agentName}</span>
+          <span style="color:var(--muted)"> — ${f.desc}</span>
+          <div class="activity-time">${f.time}</div>
+        </div>
+        <div class="activity-amt ${f.type === 'credit' ? 'amt-credit' : 'amt-debit'}">${f.amount}</div>
+      </div>`).join('');
+      } catch (e) { document.getElementById('activity-feed').innerHTML = '<div class="loading-row">Error loading</div>'; }
+    }
+
+    async function loadDashPendingWRs() {
+      try {
+        const data = await api('GET', '/api/withdrawals');
+        const pending = (data.withdrawals || []).filter(w => w.status === 'pending').slice(0, 5);
+        const el = document.getElementById('dash-pending-wrs');
+        if (!pending.length) { el.innerHTML = '<div class="loading-row" style="color:var(--muted)">No pending requests 🎉</div>'; return; }
+        el.innerHTML = pending.map(w => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-weight:700;font-size:0.84rem;">${w.agentName}</div>
+          <div style="font-size:0.72rem;color:var(--muted);">${w.bank?.bname} • ${w.id} • ${w.date}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:800;color:var(--teal);">${w.amount}</span>
+          <button class="btn btn-success btn-sm" onclick="openApproveWR('${w.id}')">✓</button>
+          <button class="btn btn-danger btn-sm" onclick="openRejectWR('${w.id}')">✕</button>
+        </div>
+      </div>`).join('');
+      } catch (e) { document.getElementById('dash-pending-wrs').innerHTML = '<div class="loading-row">Error</div>'; }
+    }
+
+    /* ══════════════════════════════════
+       AGENTS
+    ══════════════════════════════════ */
+    async function loadAgents() {
+      try {
+        const data = await api('GET', '/api/agents');
+        AGENTS = data.agents || [];
+        renderAgentCards();
+      } catch (e) {
+        document.getElementById('agents-container').innerHTML = `<div class="loading-row" style="grid-column:1/-1;">❌ ${e.message}</div>`;
+        setApiStatus(false);
+      }
+    }
+
+    function renderAgentCards() {
+      const q = (document.getElementById('agent-search')?.value || '').toLowerCase();
+      const sf = document.getElementById('agent-status-filter')?.value || '';
+      let filtered = AGENTS.filter(a => {
+        const match = a.name.toLowerCase().includes(q) || a.email.toLowerCase().includes(q) || a.code.toLowerCase().includes(q);
+        const statusOk = !sf || a.status === sf;
+        return match && statusOk;
+      });
+      const el = document.getElementById('agents-container');
+      if (!filtered.length) { el.innerHTML = '<div class="loading-row" style="grid-column:1/-1;">No agents found</div>'; return; }
+      el.innerHTML = filtered.map(a => `
+    <div class="agent-card">
+      <div class="agent-card-top">
+        <div class="agent-avatar">${initials(a.name)}</div>
+        <div class="agent-card-info">
+          <div class="agent-card-name">${a.name}</div>
+          <div class="agent-card-email">${a.email} • ${a.phone || '—'}</div>
+          <div class="agent-card-code">${a.code}</div>
+        </div>
+        <span class="status-badge ${a.status === 'active' ? 'badge-active' : 'badge-inactive'}">${a.status}</span>
+      </div>
+      <div class="agent-stats-row">
+        <div class="agent-stat"><div class="agent-stat-val">${a.refs}</div><div class="agent-stat-label">Referrals</div></div>
+        <div class="agent-stat"><div class="agent-stat-val">${money(a.totalEarned)}</div><div class="agent-stat-label">Total Earned</div></div>
+        <div class="agent-stat"><div class="agent-stat-val" style="color:var(--teal);">${money(a.available)}</div><div class="agent-stat-label">Available</div></div>
+      </div>
+      <div class="agent-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openAgentDetail('${a.id}')">👁 View</button>
+        <button class="btn btn-ghost btn-sm" onclick="openEditAgent('${a.id}')">✏️ Edit</button>
+        <button class="btn btn-warning btn-sm" onclick="openPointsModal('${a.id}')">⭐ Points</button>
+        <button class="btn ${a.status === 'active' ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleAgentStatus('${a.id}','${a.status}')">${a.status === 'active' ? '🚫 Deactivate' : '✅ Activate'}</button>
+      </div>
+    </div>`).join('');
+    }
+
+    async function openAgentDetail(id) {
+      const a = AGENTS.find(x => x.id === id);
+      if (!a) return;
+      // load referrals and transactions for this agent
+      let refs = [], txns = [];
+      try {
+        const [r, t] = await Promise.all([api('GET', `/api/agents/${id}/referrals`), api('GET', `/api/agents/${id}/transactions`)]);
+        refs = r.referrals || []; txns = t.transactions || [];
+      } catch (e) { }
+
+      document.getElementById('detail-modal-title').textContent = `${a.name} — Details`;
+      document.getElementById('agent-detail-content').innerHTML = `
+    <div class="detail-box">
+      <div class="modal-detail-row"><span class="k">Email</span><span class="v">${a.email}</span></div>
+      <div class="modal-detail-row"><span class="k">Phone</span><span class="v">${a.phone || '—'}</span></div>
+      <div class="modal-detail-row"><span class="k">Referral Code</span><span class="v" style="color:var(--teal);font-family:monospace;">${a.code}</span></div>
+      <div class="modal-detail-row"><span class="k">Status</span><span class="v"><span class="status-badge ${a.status === 'active' ? 'badge-active' : 'badge-inactive'}">${a.status}</span></span></div>
+      <div class="modal-detail-row"><span class="k">Joined</span><span class="v">${a.joined}</span></div>
+      <div class="modal-detail-row"><span class="k">Total Earned</span><span class="v">${money(a.totalEarned)}</span></div>
+      <div class="modal-detail-row"><span class="k">Available Balance</span><span class="v" style="color:var(--teal);">${money(a.available)}</span></div>
+      <div class="modal-detail-row"><span class="k">Bank</span><span class="v">${a.bank ? `${a.bank.bname} • ${a.bank.ifsc}` : '❌ Not added'}</span></div>
+    </div>
+    <div style="font-weight:700;font-size:0.84rem;margin-bottom:8px;">📋 Last Referrals (${refs.length})</div>
+    ${refs.length ? refs.slice(0, 5).map(r => `<div style="font-size:0.79rem;padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>${r.studentName} — ${r.plan}</span><span style="font-weight:700;color:var(--teal);">+${r.pts} pts</span></div>`).join('') : '<div style="font-size:0.78rem;color:var(--muted);">No referrals yet</div>'}
+    <div style="font-weight:700;font-size:0.84rem;margin:12px 0 8px;">💳 Last Transactions (${txns.length})</div>
+    ${txns.length ? txns.slice(0, 5).map(t => `<div style="font-size:0.79rem;padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>${t.desc}</span><span style="font-weight:700;color:${t.pts.startsWith('+') ? 'var(--green)' : 'var(--rose)'};">${t.pts}</span></div>`).join('') : '<div style="font-size:0.78rem;color:var(--muted);">No transactions yet</div>'}`;
+      openModal('agent-detail-modal');
+    }
+
+    function openEditAgent(id) {
+      const a = AGENTS.find(x => x.id === id);
+      if (!a) return;
+      document.getElementById('edit-agent-id').value = a.id;
+      document.getElementById('edit-name').value = a.name;
+      document.getElementById('edit-phone').value = a.phone || '';
+      document.getElementById('edit-code').value = a.code;
+      document.getElementById('edit-status').value = a.status;
+      openModal('edit-agent-modal');
+    }
+
+    async function saveEditAgent() {
+      const id = document.getElementById('edit-agent-id').value;
+      const btn = document.getElementById('edit-agent-btn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        const data = await api('PUT', `/api/agents/${id}`, {
+          name: document.getElementById('edit-name').value.trim(),
+          phone: document.getElementById('edit-phone').value.trim(),
+          code: document.getElementById('edit-code').value.trim(),
+          status: document.getElementById('edit-status').value
+        });
+        const idx = AGENTS.findIndex(a => a.id === id);
+        if (idx > -1) AGENTS[idx] = data.agent;
+        closeModal('edit-agent-modal');
+        renderAgentCards();
+        toast('✓ Agent updated!');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
+    }
+
+    async function toggleAgentStatus(id, currentStatus) {
+      const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+      try {
+        const data = await api('PUT', `/api/agents/${id}`, { status: newStatus });
+        const idx = AGENTS.findIndex(a => a.id === id);
+        if (idx > -1) AGENTS[idx] = data.agent;
+        renderAgentCards();
+        toast(`✓ Agent ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
+      } catch (e) { toast('❌ ' + e.message); }
+    }
+
+    function openAddAgentModal() {
+      ['new-name', 'new-email', 'new-phone', 'new-code'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('new-password').value = 'agent123';
+      openModal('add-agent-modal');
+    }
+
+    async function addAgent() {
+      const name = document.getElementById('new-name').value.trim();
+      const email = document.getElementById('new-email').value.trim();
+      if (!name || !email) { toast('⚠️ Name and email required'); return; }
+      const btn = document.getElementById('add-agent-btn');
+      btn.disabled = true; btn.textContent = 'Creating…';
+      try {
+        const data = await api('POST', '/api/agents', {
+          name, email,
+          phone: document.getElementById('new-phone').value.trim(),
+          password: document.getElementById('new-password').value || 'agent123',
+          code: document.getElementById('new-code').value.trim() || undefined
+        });
+        AGENTS.push(data.agent);
+        closeModal('add-agent-modal');
+        renderAgentCards();
+        toast('✓ Agent created! Code: ' + data.agent.code);
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Create Agent'; }
+    }
+
+    function openPointsModal(id) {
+      const a = AGENTS.find(x => x.id === id);
+      if (!a) return;
+      document.getElementById('pts-agent-id').value = id;
+      document.getElementById('pts-agent-name').textContent = `Agent: ${a.name} (${a.available} pts available)`;
+      document.getElementById('pts-amount').value = '';
+      document.getElementById('pts-reason').value = '';
+      document.getElementById('pts-type').value = 'credit';
+      openModal('points-modal');
+    }
+
+    async function savePoints() {
+      const id = document.getElementById('pts-agent-id').value;
+      const pts = parseInt(document.getElementById('pts-amount').value);
+      const type = document.getElementById('pts-type').value;
+      const reason = document.getElementById('pts-reason').value.trim();
+      if (!pts || !reason) { toast('⚠️ Fill all fields'); return; }
+      const btn = document.getElementById('pts-btn');
+      btn.disabled = true; btn.textContent = 'Applying…';
+      try {
+        const data = await api('POST', `/api/agents/${id}/points`, { pts, type, reason });
+        const idx = AGENTS.findIndex(a => a.id === id);
+        if (idx > -1) AGENTS[idx] = data.agent;
+        closeModal('points-modal');
+        renderAgentCards();
+        toast(`✓ ${type === 'credit' ? '+' : '-'}${pts} pts applied to agent`);
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Apply Points'; }
+    }
+
+    /* ══════════════════════════════════
+       WITHDRAWALS
+    ══════════════════════════════════ */
+    async function loadWithdrawals() {
+      try {
+        const data = await api('GET', '/api/withdrawals');
+        WITHDRAWALS = data.withdrawals || [];
+        renderWithdrawals();
+      } catch (e) {
+        document.getElementById('wr-tbody').innerHTML = `<tr><td colspan="9" class="loading-row">❌ ${e.message}</td></tr>`;
+      }
+    }
+
+    function renderWithdrawals() {
+      const sf = document.getElementById('wr-status-filter')?.value || '';
+      let filtered = WITHDRAWALS.filter(w => !sf || w.status === sf);
+      const tbody = document.getElementById('wr-tbody');
+      if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="9" class="loading-row">No withdrawal requests</td></tr>'; return; }
+      tbody.innerHTML = filtered.map(w => {
+        const badgeClass = { pending: 'badge-pending', approved: 'badge-approved', rejected: 'badge-rejected' }[w.status] || 'badge-pending';
+        const actions = w.status === 'pending'
+          ? `<button class="btn btn-success btn-sm" onclick="openApproveWR('${w.id}')">✅ Approve</button>
+         <button class="btn btn-danger btn-sm" onclick="openRejectWR('${w.id}')" style="margin-left:4px;">❌ Reject</button>`
+          : `<span style="font-size:0.74rem;color:var(--muted);">${w.resolvedDate || '—'}</span>`;
+        return `<tr>
+      <td style="font-weight:700;color:var(--teal);font-size:0.8rem;">${w.id}</td>
+      <td><div style="font-weight:600;">${w.agentName}</div><div style="font-size:0.72rem;color:var(--muted);">${w.agentCode}</div></td>
+      <td style="font-family:monospace;font-size:0.8rem;">${w.agentCode}</td>
+      <td style="font-weight:800;color:var(--teal);">⭐ ${parseInt(w.pts).toLocaleString()}</td>
+      <td style="font-weight:700;">${w.amount}</td>
+      <td><div style="font-size:0.78rem;">${w.bank?.bname}</div><div style="font-size:0.71rem;color:var(--muted);">${w.bank?.ifsc}</div></td>
+      <td style="color:var(--muted);font-size:0.8rem;">${w.date}</td>
+      <td><span class="status-badge ${badgeClass}">${w.status}</span></td>
+      <td>${actions}</td>
+    </tr>`;
+      }).join('');
+    }
+
+    function openApproveWR(id) {
+      const w = WITHDRAWALS.find(x => x.id === id) || { id, agentName: '', pts: 0, amount: '', bank: {} };
+      currentWRId = id;
+      document.getElementById('wr-approve-detail').innerHTML = `
+    <div class="modal-detail-row"><span class="k">Request ID</span><span class="v">${w.id}</span></div>
+    <div class="modal-detail-row"><span class="k">Agent</span><span class="v">${w.agentName}</span></div>
+    <div class="modal-detail-row"><span class="k">Points</span><span class="v" style="color:var(--teal);">⭐ ${parseInt(w.pts).toLocaleString()}</span></div>
+    <div class="modal-detail-row"><span class="k">Amount</span><span class="v" style="color:var(--green);">${w.amount}</span></div>
+    <div class="modal-detail-row"><span class="k">Bank</span><span class="v">${w.bank?.bname} (${w.bank?.ifsc})</span></div>
+    <div class="modal-detail-row"><span class="k">Account No.</span><span class="v" style="font-family:monospace;">${w.bank?.acc}</span></div>`;
+      openModal('wr-approve-modal');
+    }
+
+    async function confirmApproveWR() {
+      const btn = document.getElementById('wr-approve-btn');
+      btn.disabled = true; btn.textContent = 'Processing…';
+      try {
+        await api('PUT', `/api/withdrawals/${currentWRId}`, { action: 'approve' });
+        const idx = WITHDRAWALS.findIndex(w => w.id === currentWRId);
+        if (idx > -1) WITHDRAWALS[idx].status = 'approved';
+        closeModal('wr-approve-modal');
+        renderWithdrawals();
+        loadDashboard();
+        toast('✅ Withdrawal approved!');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = '✅ Confirm Approval'; }
+    }
+
+    function openRejectWR(id) {
+      const w = WITHDRAWALS.find(x => x.id === id) || { id, agentName: '', pts: 0, amount: '' };
+      currentWRId = id;
+      document.getElementById('wr-reject-reason').value = '';
+      document.getElementById('wr-reject-detail').innerHTML = `
+    <div class="modal-detail-row"><span class="k">Request</span><span class="v">${w.id}</span></div>
+    <div class="modal-detail-row"><span class="k">Agent</span><span class="v">${w.agentName}</span></div>
+    <div class="modal-detail-row"><span class="k">Amount</span><span class="v">${w.amount}</span></div>`;
+      openModal('wr-reject-modal');
+    }
+
+    async function confirmRejectWR() {
+      const reason = document.getElementById('wr-reject-reason').value.trim();
+      const btn = document.getElementById('wr-reject-btn');
+      btn.disabled = true; btn.textContent = 'Rejecting…';
+      try {
+        await api('PUT', `/api/withdrawals/${currentWRId}`, { action: 'reject', reason });
+        const idx = WITHDRAWALS.findIndex(w => w.id === currentWRId);
+        if (idx > -1) WITHDRAWALS[idx].status = 'rejected';
+        closeModal('wr-reject-modal');
+        renderWithdrawals();
+        loadDashboard();
+        toast('❌ Withdrawal rejected');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = '❌ Reject Request'; }
+    }
+
+    /* ══════════════════════════════════
+       PAYOUTS
+    ══════════════════════════════════ */
+    async function loadPayouts() {
+      try {
+        if (!AGENTS.length) { const d = await api('GET', '/api/agents'); AGENTS = d.agents || []; }
+        const eligible = AGENTS.filter(a => a.available >= 500 && a.status === 'active');
+        const total = eligible.reduce((s, a) => s + a.available, 0);
+        document.getElementById('payout-total-val').textContent = money(total);
+
+        const grid = document.getElementById('payout-due-grid');
+        if (!eligible.length) { grid.innerHTML = '<div class="loading-row" style="grid-column:1/-1;">🎉 No pending payouts — all cleared!</div>'; return; }
+        grid.innerHTML = eligible.map(a => `
+      <div class="payout-card">
+        <div class="payout-avatar">${initials(a.name)}</div>
+        <div class="payout-info">
+          <div class="payout-name">${a.name}</div>
+          <div class="payout-bank">${a.bank ? `${a.bank.bname} • ••••${a.bank.acc?.slice(-4)} • ${a.bank.ifsc}` : '❌ No bank details'}</div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-top:2px;">${a.refs} referrals • Joined ${a.joined}</div>
+        </div>
+        <div>
+          <div class="payout-amt">${money(a.available)}</div>
+          <div class="payout-sub">= ${a.available} pts</div>
+        </div>
+        <div class="payout-actions">
+          ${a.bank ? `<button class="btn btn-success btn-sm" onclick="openPayoutModal('${a.id}')">💸 Pay</button>` : `<button class="btn btn-ghost btn-sm" disabled>No Bank</button>`}
+          <button class="btn btn-ghost btn-sm" onclick="openSkipModal('${a.id}')">⏭ Skip</button>
+        </div>
+      </div>`).join('');
+      } catch (e) { document.getElementById('payout-due-grid').innerHTML = `<div class="loading-row">❌ ${e.message}</div>`; }
+    }
+
+    async function loadPayoutHistory() {
+      try {
+        const data = await api('GET', '/api/payouts');
+        const payouts = data.payouts || [];
+        const tbody = document.getElementById('payout-history-tbody');
+        if (!payouts.length) { tbody.innerHTML = '<tr><td colspan="6" class="loading-row">No payout history</td></tr>'; return; }
+        tbody.innerHTML = [...payouts].reverse().map(p => {
+          const badgeClass = { completed: 'badge-completed', skipped: 'badge-skipped' }[p.status] || 'badge-processing';
+          const typeLabel = { 'month-end': '📅 Month-End', 'month-end-bulk': '📅 Bulk', 'early': '⚡ Early' }[p.type] || p.type;
+          return `<tr>
+        <td style="font-weight:700;color:var(--teal);font-size:0.8rem;">${p.id}</td>
+        <td style="font-weight:600;">${p.agentName}</td>
+        <td style="font-weight:800;">${money(p.amount)}</td>
+        <td>${typeLabel}</td>
+        <td style="color:var(--muted);font-size:0.8rem;">${p.date}</td>
+        <td><span class="status-badge ${badgeClass}">${p.status}</span></td>
+      </tr>`;
+        }).join('');
+      } catch (e) { document.getElementById('payout-history-tbody').innerHTML = `<tr><td colspan="6">❌ ${e.message}</td></tr>`; }
+    }
+
+    function openPayoutModal(id) {
+      const a = AGENTS.find(x => x.id === id);
+      if (!a) return;
+      currentAgentId = id;
+      document.getElementById('payout-modal-detail').innerHTML = `
+    <div class="modal-detail-row"><span class="k">Agent</span><span class="v">${a.name}</span></div>
+    <div class="modal-detail-row"><span class="k">Amount</span><span class="v" style="color:var(--teal);font-size:1.1rem;">${money(a.available)}</span></div>
+    <div class="modal-detail-row"><span class="k">Bank</span><span class="v">${a.bank?.bname}</span></div>
+    <div class="modal-detail-row"><span class="k">Account</span><span class="v" style="font-family:monospace;">••••${a.bank?.acc?.slice(-4)}</span></div>
+    <div class="modal-detail-row"><span class="k">IFSC</span><span class="v">${a.bank?.ifsc}</span></div>`;
+      openModal('payout-modal');
+    }
+
+    async function confirmPayout() {
+      const btn = document.getElementById('payout-confirm-btn');
+      btn.disabled = true; btn.textContent = 'Processing…';
+      try {
+        const data = await api('POST', `/api/payouts/${currentAgentId}/confirm`);
+        // update local agent
+        const idx = AGENTS.findIndex(a => a.id === currentAgentId);
+        if (idx > -1) AGENTS[idx] = data.agent;
+        closeModal('payout-modal');
+        loadPayouts();
+        loadDashboard();
+        toast('💸 Payout confirmed!');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Confirm Payment Sent'; }
+    }
+
+    function openSkipModal(id) {
+      const a = AGENTS.find(x => x.id === id);
+      if (!a) return;
+      currentAgentId = id;
+      document.getElementById('skip-reason').value = '';
+      document.getElementById('skip-modal-detail').innerHTML = `
+    <div class="modal-detail-row"><span class="k">Agent</span><span class="v">${a.name}</span></div>
+    <div class="modal-detail-row"><span class="k">Balance</span><span class="v">${money(a.available)} (will carry forward)</span></div>`;
+      openModal('skip-modal');
+    }
+
+    async function confirmSkip() {
+      const reason = document.getElementById('skip-reason').value.trim();
+      const btn = document.getElementById('skip-btn');
+      btn.disabled = true; btn.textContent = 'Skipping…';
+      try {
+        await api('POST', `/api/payouts/${currentAgentId}/skip`, { reason });
+        closeModal('skip-modal');
+        toast('⏭ Payout skipped and logged');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Skip This Payout'; }
+    }
+
+    async function confirmBulkPayout() {
+      if (!confirm('Pay ALL eligible agents at once? This will process all agents with 500+ pts and saved bank details.')) return;
+      try {
+        const data = await api('POST', '/api/payouts/bulk');
+        // refresh agents
+        const a = await api('GET', '/api/agents'); AGENTS = a.agents || [];
+        loadPayouts();
+        loadDashboard();
+        toast(`💸 Bulk payout done! ${data.count} agents paid.`);
+      } catch (e) { toast('❌ ' + e.message); }
+    }
+
+    /* ══════════════════════════════════
+       REFERRALS
+    ══════════════════════════════════ */
+    async function loadReferrals() {
+      try {
+        const data = await api('GET', '/api/referrals');
+        const refs = data.referrals || [];
+        const tbody = document.getElementById('referrals-tbody');
+        if (!refs.length) { tbody.innerHTML = '<tr><td colspan="8" class="loading-row">No referrals yet</td></tr>'; return; }
+        tbody.innerHTML = refs.map(r => {
+          const agent = AGENTS.find(a => a.id === r.agentId);
+          return `<tr>
+        <td style="font-weight:700;color:var(--teal);font-size:0.8rem;">${r.id}</td>
+        <td><div style="font-weight:600;">${agent?.name || r.agentId}</div><div style="font-size:0.71rem;color:var(--muted);">${agent?.code || ''}</div></td>
+        <td><div style="font-weight:600;">${r.studentName}</div><div style="font-size:0.71rem;color:var(--muted);">${r.studentEmail}</div></td>
+        <td style="font-size:0.8rem;">${r.plan}</td>
+        <td style="font-weight:700;">${r.paid}</td>
+        <td style="font-weight:800;color:var(--teal);">+${(r.pts || 1000).toLocaleString()}</td>
+        <td style="color:var(--muted);font-size:0.8rem;">${r.date}</td>
+        <td><span class="status-badge badge-paid">✓ Paid</span></td>
+      </tr>`;
+        }).join('');
+      } catch (e) {
+        document.getElementById('referrals-tbody').innerHTML = `<tr><td colspan="8" class="loading-row">❌ ${e.message}</td></tr>`;
+      }
+    }
+
+    /* ══════════════════════════════════
+       AUTO LOGIN
+    ══════════════════════════════════ */
+    window.addEventListener('load', () => {
+      if (TOKEN) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.querySelector('.menu-toggle').style.display = '';
+        initPortal();
+      } else {
+        setApiStatus(true);
+      }
+    });
+  </script>
+</body>
+
+</html>

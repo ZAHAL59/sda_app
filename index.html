@@ -1,1249 +1,3161 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDA Agent Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --teal:#2bbfbf;--teal-dark:#1a9e9e;--teal-light:#e6f7f7;
-  --green:#2dc48d;--sidebar-w:220px;
-  --text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;
-  --bg:#f5f6fa;--white:#ffffff;
-  --gold:#f59e0b;--amber:#f97316;--rose:#ef4444;--violet:#8b5cf6;
-}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDA Agent Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ── LOGIN ── */
-#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;}
-.login-card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
-.login-logo{display:flex;align-items:center;gap:11px;margin-bottom:24px;}
-.login-logo-icon{width:44px;height:44px;background:linear-gradient(135deg,#2bbfbf,#1a7a9e);border-radius:11px;display:flex;align-items:center;justify-content:center;}
-.login-logo-text{font-weight:800;font-size:0.9rem;line-height:1.25;color:#1a1a2e;}
-.login-card h2{font-weight:800;font-size:1.3rem;margin-bottom:4px;}
-.login-card p{font-size:0.83rem;color:var(--muted);margin-bottom:24px;}
-.login-field{margin-bottom:14px;}
-.login-label{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;display:block;margin-bottom:5px;}
-.login-input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color 0.2s;}
-.login-input:focus{border-color:var(--teal);}
-.login-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:10px;padding:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:0.92rem;color:#fff;cursor:pointer;margin-top:6px;transition:filter 0.2s;}
-.login-btn:hover{filter:brightness(1.08);}
-.login-error{background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:8px 12px;font-size:0.79rem;color:#dc2626;font-weight:600;margin-bottom:12px;display:none;}
-.login-loading{opacity:0.6;pointer-events:none;}
+    :root {
+      --teal: #2bbfbf;
+      --teal-dark: #1a9e9e;
+      --teal-light: #e6f7f7;
+      --green: #2dc48d;
+      --sidebar-w: 220px;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f5f6fa;
+      --white: #ffffff;
+      --gold: #f59e0b;
+      --amber: #f97316;
+      --rose: #ef4444;
+      --violet: #8b5cf6;
+    }
 
-/* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform 0.25s;}
-.sidebar-logo{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
-.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#2bbfbf,#1a7a9e);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-text span{display:block;font-weight:800;font-size:0.85rem;color:var(--text);line-height:1.2;}
-.sidebar-nav{padding:16px 12px;flex:1;display:flex;flex-direction:column;gap:3px;}
-.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:500;font-size:0.88rem;color:var(--muted);transition:all 0.18s;border:none;background:transparent;width:100%;text-align:left;}
-.nav-item:hover{background:var(--teal-light);color:var(--teal);}
-.nav-item.active{background:var(--teal-light);color:var(--teal);font-weight:700;}
-.nav-icon{width:18px;height:18px;flex-shrink:0;opacity:0.65;}
-.nav-item.active .nav-icon,.nav-item:hover .nav-icon{opacity:1;}
-.menu-toggle{display:none;position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:9px;background:var(--teal);border:none;cursor:pointer;align-items:center;justify-content:center;}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:99;}
-.overlay.open{display:block;}
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
 
-/* ── MAIN ── */
-.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.topbar-title{font-weight:700;font-size:1rem;color:var(--text);}
-.topbar-right{display:flex;align-items:center;gap:8px;}
-.tb-btn{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:30px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
-.tb-logout{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
-.tb-logout:hover{border-color:var(--rose);color:var(--rose);}
-.tb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2bbfbf,#1a7a9e);color:#fff;font-weight:800;font-size:0.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.content{padding:20px 24px;flex:1;}
+    /* ── LOGIN ── */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
 
-/* ── PAGES ── */
-.page{display:none;}.page.active{display:block;animation:fadeUp 0.25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
 
-/* ── HOME ── */
-.home-banner{background:linear-gradient(135deg,#2bbfbf 0%,#1a9ead 40%,#c8eee8 100%);border-radius:16px;padding:28px 30px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative;overflow:hidden;min-height:150px;}
-.home-banner::before{content:'';position:absolute;right:180px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.08);}
-.home-banner-text h2{font-size:1.4rem;font-weight:800;color:#fff;line-height:1.3;max-width:380px;margin-bottom:7px;}
-.home-banner-text p{color:rgba(255,255,255,0.85);font-size:0.85rem;}
-.home-banner-img{width:110px;height:95px;background:rgba(255,255,255,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;flex-shrink:0;}
-.section-title{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:14px;}
-.home-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
-.hs-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;align-items:center;gap:12px;transition:all 0.2s;cursor:pointer;}
-.hs-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(43,191,191,0.12);border-color:rgba(43,191,191,0.3);}
-.hs-icon{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#2bbfbf,#1a9ead);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;}
-.hs-val{font-weight:800;font-size:1.25rem;color:var(--teal);line-height:1;margin-bottom:2px;}
-.hs-label{font-size:0.76rem;color:var(--muted);font-weight:500;}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.qa-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all 0.2s;cursor:pointer;}
-.qa-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.07);}
-.qa-icon{font-size:1.8rem;margin-bottom:9px;}
-.qa-title{font-weight:700;font-size:0.92rem;margin-bottom:4px;}
-.qa-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
-.qa-arrow{display:inline-flex;align-items:center;gap:5px;margin-top:9px;font-size:0.78rem;font-weight:700;color:var(--teal);}
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 24px;
+    }
 
-/* ── MONTH-END NOTICE ── */
-.month-end-notice{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;}
-.month-end-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
-.month-end-text{font-size:0.82rem;color:#92400e;line-height:1.6;font-weight:500;}
-.month-end-text strong{color:#78350f;font-weight:700;}
+    .login-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2bbfbf, #1a7a9e);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* ── REFER HERO ── */
-.refer-hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);border-radius:18px;padding:28px 32px;color:#fff;margin-bottom:22px;position:relative;overflow:hidden;}
-.refer-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(43,191,191,0.1);}
-.rh-content{position:relative;z-index:1;}
-.rh-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:18px;}
-.rh-left h2{font-size:1.35rem;font-weight:800;margin-bottom:5px;}
-.rh-left p{font-size:0.84rem;opacity:0.8;max-width:400px;line-height:1.6;}
-.rh-right{text-align:right;flex-shrink:0;}
-.rh-pts-label{font-size:0.68rem;opacity:0.55;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px;}
-.rh-pts-val{font-size:2.6rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#2bbfbf,#2dc48d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.rh-pts-sub{font-size:0.74rem;opacity:0.55;margin-top:2px;}
-.rh-badges{display:flex;gap:8px;flex-wrap:wrap;}
-.rh-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:5px 12px;font-size:0.76rem;font-weight:700;display:flex;align-items:center;gap:5px;}
+    .login-logo-text {
+      font-weight: 800;
+      font-size: 0.9rem;
+      line-height: 1.25;
+      color: #1a1a2e;
+    }
 
-/* ── POINTS CARD ── */
-.pts-card{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:18px;padding:24px 26px;color:#fff;position:relative;overflow:hidden;margin-bottom:22px;}
-.pts-card::before{content:'';position:absolute;top:-50px;right:-50px;width:190px;height:190px;border-radius:50%;background:rgba(43,191,191,0.12);}
-.pts-card-inner{position:relative;z-index:1;}
-.pts-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
-.pts-brand{display:flex;align-items:center;gap:10px;}
-.pts-logo{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#2bbfbf,#2dc48d);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;color:#fff;}
-.pts-brand-name{font-weight:800;font-size:0.92rem;}
-.pts-brand-sub{font-size:0.7rem;opacity:0.55;margin-top:1px;}
-.pts-chip{width:34px;height:24px;border-radius:5px;background:linear-gradient(135deg,#ffd700,#ffaa00);opacity:0.75;}
-.pts-balance-label{font-size:0.7rem;opacity:0.55;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;}
-.pts-balance{font-size:2.8rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#2bbfbf,#2dc48d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.pts-equiv{font-size:0.78rem;opacity:0.5;margin-top:4px;}
-.pts-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);}
-.pts-holder-label{font-size:0.66rem;opacity:0.45;text-transform:uppercase;letter-spacing:0.1em;}
-.pts-holder-name{font-size:0.88rem;font-weight:700;margin-top:2px;}
-.redeem-btn{background:linear-gradient(135deg,#2bbfbf,#2dc48d);border:none;border-radius:9px;padding:9px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.83rem;color:#fff;cursor:pointer;transition:all 0.2s;}
-.redeem-btn:hover{filter:brightness(1.1);}
-.pts-note{margin-top:10px;font-size:0.72rem;opacity:0.45;display:flex;align-items:center;gap:5px;}
+    .login-card h2 {
+      font-weight: 800;
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
 
-/* ── MAIN GRID ── */
-.refer-main-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px;}
-.ref-code-box{background:var(--white);border-radius:18px;padding:22px 24px;border:1px solid var(--border);}
-.ref-code-box h3{font-weight:700;font-size:0.92rem;margin-bottom:4px;}
-.box-sub{font-size:0.78rem;color:var(--muted);margin-bottom:16px;line-height:1.5;}
-.code-display{background:linear-gradient(135deg,#e6f7f7,#d1f5e8);border:2px dashed var(--teal);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.code-text{font-size:1.4rem;font-weight:800;letter-spacing:0.12em;color:var(--teal);}
-.copy-btn{background:var(--teal);border:none;border-radius:7px;padding:7px 13px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.78rem;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.2s;white-space:nowrap;}
-.copy-btn:hover{background:var(--teal-dark);}
-.copy-btn.copied{background:var(--green);}
-.discount-notice{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:9px;padding:10px 13px;font-size:0.78rem;font-weight:600;color:#92400e;display:flex;align-items:center;gap:6px;margin-bottom:12px;}
-.share-btns{display:flex;gap:7px;flex-wrap:wrap;}
-.share-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--white);color:var(--text);transition:all 0.2s;}
-.share-btn:hover{border-color:var(--teal);color:var(--teal);}
+    .login-card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
 
-/* ── REDEEM BOX ── */
-.redeem-box{background:var(--white);border-radius:18px;padding:22px 24px;border:1px solid var(--border);}
-.redeem-box h3{font-weight:700;font-size:0.92rem;margin-bottom:4px;}
-.pts-breakdown{background:var(--bg);border-radius:11px;padding:13px 15px;margin-bottom:14px;}
-.pb-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
-.pb-row:last-child{border-bottom:none;}
-.pb-label{font-size:0.78rem;color:var(--muted);font-weight:500;}
-.pb-val{font-weight:700;font-size:0.86rem;}
-.pb-val.green{color:var(--green);}
-.pb-val.teal{color:var(--teal);}
+    .login-field {
+      margin-bottom: 14px;
+    }
 
-/* ── BANK DETAILS FORM ── */
-.bank-form{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin-bottom:14px;}
-.bank-form-title{font-size:0.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:5px;}
-.bank-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.bank-field{display:flex;flex-direction:column;gap:4px;}
-.bank-field.full{grid-column:1/-1;}
-.bank-label{font-size:0.7rem;font-weight:600;color:var(--muted);}
-.bank-input{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.84rem;color:var(--text);outline:none;background:var(--white);transition:border-color 0.2s;}
-.bank-input:focus{border-color:var(--teal);}
-.bank-input::placeholder{color:#aaa;}
-.bank-input:disabled{background:#f0f0f0;color:var(--muted);}
+    .login-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      display: block;
+      margin-bottom: 5px;
+    }
 
-.pts-input-row{display:flex;gap:8px;margin-bottom:10px;}
-.pts-input{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:9px 13px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color 0.2s;}
-.pts-input:focus{border-color:var(--teal);}
-.req-btn{background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:9px;padding:9px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.83rem;color:#fff;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
-.req-btn:hover{filter:brightness(1.1);}
-.req-btn:disabled{opacity:0.4;cursor:not-allowed;filter:none;}
-.upi-label{font-size:0.74rem;font-weight:600;color:var(--muted);margin-bottom:5px;}
-.info-note{background:var(--teal-light);border:1px solid rgba(43,191,191,0.25);border-radius:9px;padding:9px 12px;font-size:0.76rem;color:var(--teal-dark);font-weight:600;display:flex;align-items:flex-start;gap:6px;line-height:1.5;}
-.pending-empty{text-align:center;color:var(--muted);padding:26px;font-size:0.83rem;}
+    .login-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-/* ── STATS STRIP ── */
-.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:22px;}
-.ss-card{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:14px;text-align:center;position:relative;overflow:hidden;}
-.ss-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
-.ss-card.c1::after{background:linear-gradient(90deg,var(--teal),var(--green));}
-.ss-card.c2::after{background:linear-gradient(90deg,#f59e0b,#ef4444);}
-.ss-card.c3::after{background:linear-gradient(90deg,var(--violet),#6366f1);}
-.ss-card.c4::after{background:linear-gradient(90deg,#2dc48d,#0891b2);}
-.ss-val{font-weight:800;font-size:1.4rem;line-height:1;margin-bottom:3px;}
-.ss-card.c1 .ss-val{color:var(--teal);}
-.ss-card.c2 .ss-val{color:#f59e0b;}
-.ss-card.c3 .ss-val{color:var(--violet);}
-.ss-card.c4 .ss-val{color:#2dc48d;}
-.ss-label{font-size:0.72rem;color:var(--muted);font-weight:600;}
+    .login-input:focus {
+      border-color: var(--teal);
+    }
 
-/* ── TABLES ── */
-.table-card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:20px 22px;margin-bottom:18px;overflow-x:auto;}
-.table-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:7px;}
-.table-card-head h3{font-weight:700;font-size:0.92rem;}
-.tbl{width:100%;border-collapse:collapse;min-width:500px;}
-.tbl th{text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);padding:7px 12px;background:var(--bg);}
-.tbl th:first-child{border-radius:7px 0 0 7px;} .tbl th:last-child{border-radius:0 7px 7px 0;}
-.tbl td{padding:11px 12px;font-size:0.82rem;border-bottom:1px solid var(--border);vertical-align:middle;}
-.tbl tr:last-child td{border-bottom:none;}
-.tbl tbody tr:hover{background:#fafafa;}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:0.7rem;font-weight:700;}
-.badge-paid{background:#d1fae5;color:#059669;}
-.badge-processing{background:#dbeafe;color:#2563eb;}
-.badge-credited{background:#d1fae5;color:#059669;}
-.badge-rejected{background:#fee2e2;color:#dc2626;}
-.badge-completed{background:#d1fae5;color:#059669;}
-.pts-plus{font-weight:800;color:var(--teal);}
-.pts-minus{font-weight:800;color:var(--rose);}
-.pts-pending{font-weight:700;color:#f59e0b;}
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--teal), var(--green));
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: filter 0.2s;
+    }
 
-/* ── INNER TABS ── */
-.inner-tabs{display:flex;gap:5px;background:var(--bg);border-radius:11px;padding:4px;margin-bottom:18px;width:fit-content;flex-wrap:wrap;}
-.itab{padding:6px 15px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:0.81rem;cursor:pointer;color:var(--muted);background:transparent;transition:all 0.2s;}
-.itab.active{background:var(--white);color:var(--teal);box-shadow:0 1px 4px rgba(0,0,0,0.08);}
-.itab-panel{display:none;}.itab-panel.active{display:block;animation:fadeUp 0.2s ease;}
+    .login-btn:hover {
+      filter: brightness(1.08);
+    }
 
-/* ── MATERIALS ── */
-.mat-hero{background:linear-gradient(135deg,#0f2027 0%,#203a43 45%,#2c5364 100%);border-radius:18px;padding:28px 32px;color:#fff;margin-bottom:22px;position:relative;overflow:hidden;}
-.mat-hero::before{content:'';position:absolute;right:-40px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(43,191,191,0.08);}
-.mat-hero-inner{position:relative;z-index:1;}
-.mat-hero h2{font-size:1.35rem;font-weight:800;margin-bottom:7px;}
-.mat-hero p{font-size:0.84rem;opacity:0.75;max-width:500px;line-height:1.7;margin-bottom:16px;}
-.mat-hero-badges{display:flex;gap:8px;flex-wrap:wrap;}
-.mat-hero-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:30px;padding:5px 12px;font-size:0.76rem;font-weight:700;}
-.plan-cat-tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
-.plan-cat-tab{padding:7px 18px;border-radius:30px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;background:var(--white);color:var(--muted);transition:all 0.2s;}
-.plan-cat-tab:hover{border-color:var(--teal);color:var(--teal);}
-.plan-cat-tab.active-neet{background:linear-gradient(135deg,#1a1a2e,#0f3460);border-color:#0f3460;color:#fff;}
-.plan-cat-tab.active-foundation{background:linear-gradient(135deg,#1b4332,#40916c);border-color:#40916c;color:#fff;}
-.plan-cat-tab.active-all{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#fff;}
-.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-bottom:24px;}
-.mat-card{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.22s;display:flex;flex-direction:column;}
-.mat-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(43,191,191,0.13);border-color:rgba(43,191,191,0.3);}
-.mat-card-thumb{height:140px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.mat-card-thumb .thumb-emoji{font-size:3.5rem;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.18));}
-.thumb-neet-premium{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);}
-.thumb-neet-elite{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);}
-.thumb-found-premium{background:linear-gradient(135deg,#1b4332,#2d6a4f,#40916c);}
-.thumb-found-elite{background:linear-gradient(135deg,#7b2d8b,#9b59b6,#c39bd3);}
-.thumb-label{position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:3px 9px;font-size:0.66rem;font-weight:700;color:#fff;text-transform:uppercase;}
-.thumb-new{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#2bbfbf,#2dc48d);border-radius:20px;padding:3px 9px;font-size:0.66rem;font-weight:800;color:#fff;}
-.thumb-elite-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffd700,#ffaa00);border-radius:20px;padding:3px 9px;font-size:0.66rem;font-weight:800;color:#7a4f00;}
-.mat-card-body{padding:18px 20px;flex:1;display:flex;flex-direction:column;}
-.mat-card-title{font-weight:800;font-size:0.94rem;margin-bottom:3px;color:var(--text);}
-.mat-card-category{font-size:0.7rem;font-weight:700;margin-bottom:7px;}
-.mat-card-price{font-size:1.2rem;font-weight:800;margin-bottom:3px;}
-.mat-card-price .strike{font-size:0.82rem;font-weight:500;color:var(--muted);text-decoration:line-through;margin-right:5px;}
-.mat-card-price .disc{font-size:0.72rem;font-weight:700;background:#d1fae5;color:#059669;border-radius:20px;padding:2px 7px;margin-left:3px;}
-.mat-card-desc{font-size:0.77rem;color:var(--muted);line-height:1.6;margin-bottom:10px;flex:1;}
-.mat-card-features{margin-bottom:12px;}
-.mat-feat{font-size:0.76rem;color:var(--text);line-height:1.75;font-weight:500;}
-.mat-card-actions{display:flex;gap:7px;}
-.mat-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;border-radius:9px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.78rem;transition:all 0.2s;}
-.mat-btn-wa{background:#25d366;color:#fff;}
-.mat-btn-wa:hover{filter:brightness(1.1);}
-.mat-btn-secondary{background:var(--bg);color:var(--text);border:1.5px solid var(--border);}
-.mat-btn-secondary:hover{border-color:var(--teal);color:var(--teal);}
-.plan-section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:4px;}
-.plan-section-line{flex:1;height:1px;background:var(--border);}
-.plan-section-title{font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;padding:0 4px;}
-.share-option-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
-.share-option-btn{display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:0.82rem;cursor:pointer;background:var(--white);color:var(--text);transition:all 0.2s;}
-.share-option-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-light);}
-.share-option-icon{font-size:1.25rem;}
-.preview-msg-box{background:var(--bg);border-radius:11px;padding:12px 14px;font-size:0.8rem;line-height:1.7;color:var(--text);border:1px solid var(--border);margin-bottom:12px;white-space:pre-wrap;max-height:150px;overflow-y:auto;}
-.preview-msg-label{font-size:0.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.07em;}
+    .login-error {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.79rem;
+      color: #dc2626;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: none;
+    }
 
-/* ── API LOADING ── */
-.api-loading{display:flex;align-items:center;justify-content:center;padding:32px;gap:10px;color:var(--muted);font-size:0.84rem;}
-.spinner{width:20px;height:20px;border:2px solid var(--border);border-top:2px solid var(--teal);border-radius:50%;animation:spin 0.6s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
+    .login-loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
 
-/* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
-.modal-bg.open{display:flex;}
-.modal{background:var(--white);border-radius:18px;padding:28px;max-width:440px;width:100%;animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;}
-@keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
-.modal-icon{font-size:2.6rem;text-align:center;margin-bottom:10px;}
-.modal h3{font-weight:800;font-size:1.1rem;text-align:center;margin-bottom:7px;}
-.modal p{font-size:0.84rem;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:18px;}
-.modal-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;}
-.modal-btn{padding:10px 22px;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.86rem;cursor:pointer;transition:all 0.2s;border:none;}
-.modal-btn-primary{background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;}
-.modal-btn-secondary{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
-.modal-detail{background:var(--bg);border-radius:11px;padding:13px 15px;margin-bottom:14px;}
-.modal-detail-row{display:flex;justify-content:space-between;padding:4px 0;font-size:0.82rem;}
-.modal-detail-row .k{color:var(--muted);}
-.modal-detail-row .v{font-weight:700;}
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      transition: transform 0.25s;
+    }
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:20px;right:20px;padding:11px 16px;border-radius:9px;background:#1a1a2e;color:#fff;font-size:0.82rem;font-weight:600;opacity:0;transform:translateY(8px);transition:all 0.3s;z-index:999;pointer-events:none;border:1px solid rgba(43,191,191,0.4);max-width:320px;}
-.toast.show{opacity:1;transform:translateY(0);}
+    .sidebar-logo {
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* ── API STATUS ── */
-.api-status{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--teal-light);color:var(--teal-dark);}
-.api-status.offline{background:#fee2e2;color:#dc2626;}
-.api-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);}
-.api-status.offline .api-dot{background:#dc2626;}
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #2bbfbf, #1a7a9e);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-/* ══════════════ RESPONSIVE ══════════════ */
-@media(max-width:768px){
-  .menu-toggle{display:flex;}
-  .sidebar{transform:translateX(-100%);}
-  .sidebar.open{transform:translateX(0);}
-  .main{margin-left:0;}
-  .topbar{padding:14px 16px 14px 60px;}
-  .content{padding:16px;}
-  .home-stats{grid-template-columns:1fr 1fr;}
-  .quick-actions{grid-template-columns:1fr;}
-  .refer-main-grid{grid-template-columns:1fr;}
-  .stats-strip{grid-template-columns:repeat(2,1fr);}
-  .mat-grid{grid-template-columns:1fr;}
-  .share-option-grid{grid-template-columns:1fr;}
-  .bank-field-grid{grid-template-columns:1fr;}
-  .home-banner{flex-direction:column;gap:14px;min-height:auto;padding:22px;}
-  .home-banner-img{width:70px;height:60px;font-size:2.5rem;align-self:flex-end;}
-  .rh-top{flex-direction:column;}
-  .rh-right{text-align:left;}
-  .pts-card-bottom{flex-direction:column;align-items:flex-start;gap:12px;}
-}
-@media(max-width:480px){
-  .home-stats{grid-template-columns:1fr;}
-  .stats-strip{grid-template-columns:1fr 1fr;}
-  .modal-btns{flex-direction:column;}
-  .modal-btn{width:100%;}
-  .inner-tabs{gap:3px;}
-  .itab{padding:6px 10px;font-size:0.76rem;}
-}
-</style>
+    .logo-text span {
+      display: block;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .sidebar-nav {
+      padding: 16px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.88rem;
+      color: var(--muted);
+      transition: all 0.18s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      background: var(--teal-light);
+      color: var(--teal);
+    }
+
+    .nav-item.active {
+      background: var(--teal-light);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0.65;
+    }
+
+    .nav-item.active .nav-icon,
+    .nav-item:hover .nav-icon {
+      opacity: 1;
+    }
+
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 200;
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: var(--teal);
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 99;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tb-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .tb-logout {
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .tb-logout:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+
+    .tb-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2bbfbf, #1a7a9e);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .content {
+      padding: 20px 24px;
+      flex: 1;
+    }
+
+    /* ── PAGES ── */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeUp 0.25s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ── HOME ── */
+    .home-banner {
+      background: linear-gradient(135deg, #2bbfbf 0%, #1a9ead 40%, #c8eee8 100%);
+      border-radius: 16px;
+      padding: 28px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      min-height: 150px;
+    }
+
+    .home-banner::before {
+      content: '';
+      position: absolute;
+      right: 180px;
+      top: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .home-banner-text h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      max-width: 380px;
+      margin-bottom: 7px;
+    }
+
+    .home-banner-text p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.85rem;
+    }
+
+    .home-banner-img {
+      width: 110px;
+      height: 95px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .home-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hs-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .hs-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(43, 191, 191, 0.12);
+      border-color: rgba(43, 191, 191, 0.3);
+    }
+
+    .hs-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #2bbfbf, #1a9ead);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+
+    .hs-val {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .hs-label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .qa-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .qa-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .qa-icon {
+      font-size: 1.8rem;
+      margin-bottom: 9px;
+    }
+
+    .qa-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+
+    .qa-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .qa-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 9px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal);
+    }
+
+    /* ── MONTH-END NOTICE ── */
+    .month-end-notice {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 1px solid #f59e0b;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .month-end-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .month-end-text {
+      font-size: 0.82rem;
+      color: #92400e;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .month-end-text strong {
+      color: #78350f;
+      font-weight: 700;
+    }
+
+    /* ── REFER HERO ── */
+    .refer-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+      border-radius: 18px;
+      padding: 28px 32px;
+      color: #fff;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .refer-hero::before {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(43, 191, 191, 0.1);
+    }
+
+    .rh-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .rh-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .rh-left h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .rh-left p {
+      font-size: 0.84rem;
+      opacity: 0.8;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .rh-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .rh-pts-label {
+      font-size: 0.68rem;
+      opacity: 0.55;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+
+    .rh-pts-val {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #2bbfbf, #2dc48d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .rh-pts-sub {
+      font-size: 0.74rem;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+
+    .rh-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .rh-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── POINTS CARD ── */
+    .pts-card {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      border-radius: 18px;
+      padding: 24px 26px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .pts-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: rgba(43, 191, 191, 0.12);
+    }
+
+    .pts-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pts-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .pts-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pts-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2bbfbf, #2dc48d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.82rem;
+      color: #fff;
+    }
+
+    .pts-brand-name {
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .pts-brand-sub {
+      font-size: 0.7rem;
+      opacity: 0.55;
+      margin-top: 1px;
+    }
+
+    .pts-chip {
+      width: 34px;
+      height: 24px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      opacity: 0.75;
+    }
+
+    .pts-balance-label {
+      font-size: 0.7rem;
+      opacity: 0.55;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .pts-balance {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #2bbfbf, #2dc48d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .pts-equiv {
+      font-size: 0.78rem;
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+
+    .pts-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pts-holder-label {
+      font-size: 0.66rem;
+      opacity: 0.45;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .pts-holder-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .redeem-btn {
+      background: linear-gradient(135deg, #2bbfbf, #2dc48d);
+      border: none;
+      border-radius: 9px;
+      padding: 9px 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.83rem;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .redeem-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .pts-note {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      opacity: 0.45;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── MAIN GRID ── */
+    .refer-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .ref-code-box {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+    }
+
+    .ref-code-box h3 {
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+
+    .box-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .code-display {
+      background: linear-gradient(135deg, #e6f7f7, #d1f5e8);
+      border: 2px dashed var(--teal);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .code-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+    }
+
+    .copy-btn {
+      background: var(--teal);
+      border: none;
+      border-radius: 7px;
+      padding: 7px 13px;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+      background: var(--teal-dark);
+    }
+
+    .copy-btn.copied {
+      background: var(--green);
+    }
+
+    .discount-notice {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 1px solid #f59e0b;
+      border-radius: 9px;
+      padding: 10px 13px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .share-btns {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .share-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    /* ── REDEEM BOX ── */
+    .redeem-box {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+    }
+
+    .redeem-box h3 {
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+
+    .pts-breakdown {
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 13px 15px;
+      margin-bottom: 14px;
+    }
+
+    .pb-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pb-row:last-child {
+      border-bottom: none;
+    }
+
+    .pb-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .pb-val {
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    .pb-val.green {
+      color: var(--green);
+    }
+
+    .pb-val.teal {
+      color: var(--teal);
+    }
+
+    /* ── BANK DETAILS FORM ── */
+    .bank-form {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .bank-form-title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bank-field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .bank-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bank-field.full {
+      grid-column: 1/-1;
+    }
+
+    .bank-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .bank-input {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.84rem;
+      color: var(--text);
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+
+    .bank-input:focus {
+      border-color: var(--teal);
+    }
+
+    .bank-input::placeholder {
+      color: #aaa;
+    }
+
+    .bank-input:disabled {
+      background: #f0f0f0;
+      color: var(--muted);
+    }
+
+    .pts-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pts-input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .pts-input:focus {
+      border-color: var(--teal);
+    }
+
+    .req-btn {
+      background: linear-gradient(135deg, var(--teal), var(--green));
+      border: none;
+      border-radius: 9px;
+      padding: 9px 16px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.83rem;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .req-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .req-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: none;
+    }
+
+    .upi-label {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .info-note {
+      background: var(--teal-light);
+      border: 1px solid rgba(43, 191, 191, 0.25);
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 0.76rem;
+      color: var(--teal-dark);
+      font-weight: 600;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.5;
+    }
+
+    .pending-empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 26px;
+      font-size: 0.83rem;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 11px;
+      margin-bottom: 22px;
+    }
+
+    .ss-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 14px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ss-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .ss-card.c1::after {
+      background: linear-gradient(90deg, var(--teal), var(--green));
+    }
+
+    .ss-card.c2::after {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    .ss-card.c3::after {
+      background: linear-gradient(90deg, var(--violet), #6366f1);
+    }
+
+    .ss-card.c4::after {
+      background: linear-gradient(90deg, #2dc48d, #0891b2);
+    }
+
+    .ss-val {
+      font-weight: 800;
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .ss-card.c1 .ss-val {
+      color: var(--teal);
+    }
+
+    .ss-card.c2 .ss-val {
+      color: #f59e0b;
+    }
+
+    .ss-card.c3 .ss-val {
+      color: var(--violet);
+    }
+
+    .ss-card.c4 .ss-val {
+      color: #2dc48d;
+    }
+
+    .ss-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* ── TABLES ── */
+    .table-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+
+    .table-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .table-card-head h3 {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .tbl {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+
+    .tbl th {
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      padding: 7px 12px;
+      background: var(--bg);
+    }
+
+    .tbl th:first-child {
+      border-radius: 7px 0 0 7px;
+    }
+
+    .tbl th:last-child {
+      border-radius: 0 7px 7px 0;
+    }
+
+    .tbl td {
+      padding: 11px 12px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .tbl tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tbl tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .badge-paid {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-processing {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .badge-credited {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-rejected {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .badge-completed {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .pts-plus {
+      font-weight: 800;
+      color: var(--teal);
+    }
+
+    .pts-minus {
+      font-weight: 800;
+      color: var(--rose);
+    }
+
+    .pts-pending {
+      font-weight: 700;
+      color: #f59e0b;
+    }
+
+    /* ── INNER TABS ── */
+    .inner-tabs {
+      display: flex;
+      gap: 5px;
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 4px;
+      margin-bottom: 18px;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .itab {
+      padding: 6px 15px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.81rem;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .itab.active {
+      background: var(--white);
+      color: var(--teal);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .itab-panel {
+      display: none;
+    }
+
+    .itab-panel.active {
+      display: block;
+      animation: fadeUp 0.2s ease;
+    }
+
+    /* ── MATERIALS ── */
+    .mat-hero {
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 45%, #2c5364 100%);
+      border-radius: 18px;
+      padding: 28px 32px;
+      color: #fff;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mat-hero::before {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(43, 191, 191, 0.08);
+    }
+
+    .mat-hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .mat-hero h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .mat-hero p {
+      font-size: 0.84rem;
+      opacity: 0.75;
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .mat-hero-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mat-hero-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 30px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .plan-cat-tabs {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .plan-cat-tab {
+      padding: 7px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .plan-cat-tab:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .plan-cat-tab.active-neet {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      border-color: #0f3460;
+      color: #fff;
+    }
+
+    .plan-cat-tab.active-foundation {
+      background: linear-gradient(135deg, #1b4332, #40916c);
+      border-color: #40916c;
+      color: #fff;
+    }
+
+    .plan-cat-tab.active-all {
+      background: linear-gradient(135deg, var(--teal), var(--green));
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .mat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .mat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: all 0.22s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(43, 191, 191, 0.13);
+      border-color: rgba(43, 191, 191, 0.3);
+    }
+
+    .mat-card-thumb {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mat-card-thumb .thumb-emoji {
+      font-size: 3.5rem;
+      z-index: 1;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18));
+    }
+
+    .thumb-neet-premium {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+
+    .thumb-neet-elite {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    }
+
+    .thumb-found-premium {
+      background: linear-gradient(135deg, #1b4332, #2d6a4f, #40916c);
+    }
+
+    .thumb-found-elite {
+      background: linear-gradient(135deg, #7b2d8b, #9b59b6, #c39bd3);
+    }
+
+    .thumb-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .thumb-new {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #2bbfbf, #2dc48d);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .thumb-elite-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #7a4f00;
+    }
+
+    .mat-card-body {
+      padding: 18px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mat-card-title {
+      font-weight: 800;
+      font-size: 0.94rem;
+      margin-bottom: 3px;
+      color: var(--text);
+    }
+
+    .mat-card-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .mat-card-price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .mat-card-price .strike {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-right: 5px;
+    }
+
+    .mat-card-price .disc {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #d1fae5;
+      color: #059669;
+      border-radius: 20px;
+      padding: 2px 7px;
+      margin-left: 3px;
+    }
+
+    .mat-card-desc {
+      font-size: 0.77rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+      flex: 1;
+    }
+
+    .mat-card-features {
+      margin-bottom: 12px;
+    }
+
+    .mat-feat {
+      font-size: 0.76rem;
+      color: var(--text);
+      line-height: 1.75;
+      font-weight: 500;
+    }
+
+    .mat-card-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .mat-action-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      transition: all 0.2s;
+    }
+
+    .mat-btn-wa {
+      background: #25d366;
+      color: #fff;
+    }
+
+    .mat-btn-wa:hover {
+      filter: brightness(1.1);
+    }
+
+    .mat-btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .mat-btn-secondary:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .plan-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      margin-top: 4px;
+    }
+
+    .plan-section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .plan-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      padding: 0 4px;
+    }
+
+    .share-option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+
+    .share-option-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .share-option-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: var(--teal-light);
+    }
+
+    .share-option-icon {
+      font-size: 1.25rem;
+    }
+
+    .preview-msg-box {
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .preview-msg-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ── API LOADING ── */
+    .api-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top: 2px solid var(--teal);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* ── MODAL ── */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-bg.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 440px;
+      width: 100%;
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.85);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .modal-icon {
+      font-size: 2.6rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .modal h3 {
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 7px;
+    }
+
+    .modal p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 9px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-btn {
+      padding: 10px 22px;
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--green));
+      color: #fff;
+    }
+
+    .modal-btn-secondary {
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .modal-detail {
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 13px 15px;
+      margin-bottom: 14px;
+    }
+
+    .modal-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 0.82rem;
+    }
+
+    .modal-detail-row .k {
+      color: var(--muted);
+    }
+
+    .modal-detail-row .v {
+      font-weight: 700;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 11px 16px;
+      border-radius: 9px;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      z-index: 999;
+      pointer-events: none;
+      border: 1px solid rgba(43, 191, 191, 0.4);
+      max-width: 320px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── API STATUS ── */
+    .api-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--teal-light);
+      color: var(--teal-dark);
+    }
+
+    .api-status.offline {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .api-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .api-status.offline .api-dot {
+      background: #dc2626;
+    }
+
+    /* ══════════════ RESPONSIVE ══════════════ */
+    @media(max-width:768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .topbar {
+        padding: 14px 16px 14px 60px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .home-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .refer-main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .mat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .share-option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bank-field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-banner {
+        flex-direction: column;
+        gap: 14px;
+        min-height: auto;
+        padding: 22px;
+      }
+
+      .home-banner-img {
+        width: 70px;
+        height: 60px;
+        font-size: 2.5rem;
+        align-self: flex-end;
+      }
+
+      .rh-top {
+        flex-direction: column;
+      }
+
+      .rh-right {
+        text-align: left;
+      }
+
+      .pts-card-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
+    @media(max-width:480px) {
+      .home-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .modal-btns {
+        flex-direction: column;
+      }
+
+      .modal-btn {
+        width: 100%;
+      }
+
+      .inner-tabs {
+        gap: 3px;
+      }
+
+      .itab {
+        padding: 6px 10px;
+        font-size: 0.76rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ── LOGIN SCREEN ── -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-logo-icon">
-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" fill="white" opacity="0.9"/><rect x="18" y="2" width="12" height="12" rx="3" fill="white" opacity="0.6"/><rect x="2" y="18" width="12" height="12" rx="3" fill="white" opacity="0.6"/><rect x="18" y="18" width="12" height="12" rx="3" fill="white" opacity="0.3"/></svg>
+  <!-- ── LOGIN SCREEN ── -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="3" fill="white" opacity="0.9" />
+            <rect x="18" y="2" width="12" height="12" rx="3" fill="white" opacity="0.6" />
+            <rect x="2" y="18" width="12" height="12" rx="3" fill="white" opacity="0.6" />
+            <rect x="18" y="18" width="12" height="12" rx="3" fill="white" opacity="0.3" />
+          </svg>
+        </div>
+        <div class="login-logo-text">Shaheen Digital Academy<br><span
+            style="font-size:0.72rem;color:#6b7280;font-weight:500;">Agent Portal</span></div>
       </div>
-      <div class="login-logo-text">Shaheen Digital Academy<br><span style="font-size:0.72rem;color:#6b7280;font-weight:500;">Agent Portal</span></div>
-    </div>
-    <h2>Welcome back 👋</h2>
-    <p>Sign in to your agent account to track earnings, referrals and payouts.</p>
-    <div class="login-error" id="login-error"></div>
-    <div class="login-field">
-      <label class="login-label">Email Address</label>
-      <input class="login-input" id="login-email" type="email" placeholder="your@email.com" value="ebin@shaheendigital.in">
-    </div>
-    <div class="login-field">
-      <label class="login-label">Password</label>
-      <input class="login-input" id="login-password" type="password" placeholder="••••••••" value="agent123" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In to Agent Portal</button>
-    <div style="margin-top:14px;text-align:center;font-size:0.74rem;color:var(--muted);">
-      Demo: ebin@shaheendigital.in / agent123
+      <h2>Welcome back 👋</h2>
+      <p>Sign in to your agent account to track earnings, referrals and payouts.</p>
+      <div class="login-error" id="login-error"></div>
+      <div class="login-field">
+        <label class="login-label">Email Address</label>
+        <input class="login-input" id="login-email" type="email" placeholder="your@email.com"
+          value="ebin@shaheendigital.in">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <input class="login-input" id="login-password" type="password" placeholder="••••••••" value="agent123"
+          onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In to Agent Portal</button>
+      <div style="margin-top:14px;text-align:center;font-size:0.74rem;color:var(--muted);">
+        Demo: ebin@shaheendigital.in / agent123
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Mobile hamburger -->
-<button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+  <!-- Mobile hamburger -->
+  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  </button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon">
-      <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" fill="white" opacity="0.9"/><rect x="18" y="2" width="12" height="12" rx="3" fill="white" opacity="0.6"/><rect x="2" y="18" width="12" height="12" rx="3" fill="white" opacity="0.6"/><rect x="18" y="18" width="12" height="12" rx="3" fill="white" opacity="0.3"/></svg>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <rect x="2" y="2" width="12" height="12" rx="3" fill="white" opacity="0.9" />
+          <rect x="18" y="2" width="12" height="12" rx="3" fill="white" opacity="0.6" />
+          <rect x="2" y="18" width="12" height="12" rx="3" fill="white" opacity="0.6" />
+          <rect x="18" y="18" width="12" height="12" rx="3" fill="white" opacity="0.3" />
+        </svg>
+      </div>
+      <div class="logo-text"><span>Shaheen</span><span>Digital</span><span>Academy</span></div>
     </div>
-    <div class="logo-text"><span>Shaheen</span><span>Digital</span><span>Academy</span></div>
-  </div>
-  <nav class="sidebar-nav">
-    <button class="nav-item active" onclick="showPage('home',this)">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Home</span>
-    </button>
-    <button class="nav-item" onclick="showPage('refer',this)">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span>Refer & Earn</span>
-    </button>
-    <button class="nav-item" onclick="showPage('materials',this)">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <span>Materials</span>
-    </button>
-  </nav>
-  <div style="padding:12px;border-top:1px solid var(--border);">
-    <div id="api-status-indicator" class="api-status"><div class="api-dot"></div><span id="api-status-text">Connected</span></div>
-  </div>
-</aside>
-
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="page-title">Home</div>
-    <div class="topbar-right">
-      <button class="tb-btn tb-logout" onclick="doLogout()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Logout
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showPage('home',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+        </svg>
+        <span>Home</span>
       </button>
-      <div class="tb-avatar" id="tb-avatar">EA</div>
+      <button class="nav-item" onclick="showPage('refer',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <span>Refer & Earn</span>
+      </button>
+      <button class="nav-item" onclick="showPage('materials',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        <span>Materials</span>
+      </button>
+    </nav>
+    <div style="padding:12px;border-top:1px solid var(--border);">
+      <div id="api-status-indicator" class="api-status">
+        <div class="api-dot"></div><span id="api-status-text">Connected</span>
+      </div>
     </div>
-  </div>
+  </aside>
 
-  <div class="content">
-
-    <!-- HOME -->
-    <div class="page active" id="page-home">
-      <div class="home-banner">
-        <div class="home-banner-text">
-          <h2 id="home-welcome">Welcome back! 👋</h2>
-          <p>You're doing great as an SDA Agent. Keep sharing and earning!</p>
-        </div>
-        <div class="home-banner-img">🏆</div>
-      </div>
-      <div class="month-end-notice">
-        <div class="month-end-icon">📅</div>
-        <div class="month-end-text">
-          <strong>Month-end Payout:</strong> The SDA team reviews all agent balances at the end of each month and transfers earnings directly to your registered bank account. Need money sooner? Use the <strong>Withdraw</strong> tab to request early payment anytime.
-        </div>
-      </div>
-      <div class="section-title">Your Activity</div>
-      <div class="home-stats">
-        <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
-          <div class="hs-icon">⭐</div>
-          <div><div class="hs-val" id="hs-pts">—</div><div class="hs-label">Total Points Earned</div></div>
-        </div>
-        <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
-          <div class="hs-icon">👥</div>
-          <div><div class="hs-val" id="hs-refs">—</div><div class="hs-label">Total Referrals</div></div>
-        </div>
-        <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
-          <div class="hs-icon">💰</div>
-          <div><div class="hs-val" id="hs-money">—</div><div class="hs-label">Money Earned</div></div>
-        </div>
-      </div>
-      <div class="section-title">Quick Actions</div>
-      <div class="quick-actions">
-        <div class="qa-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
-          <div class="qa-icon">🔗</div>
-          <div class="qa-title">Share Referral Code</div>
-          <div class="qa-desc">Share your code with potential students and earn points per successful sale.</div>
-          <div class="qa-arrow">Go to Refer & Earn <span>→</span></div>
-        </div>
-        <div class="qa-card" onclick="showPage('materials',document.querySelectorAll('.nav-item')[2])">
-          <div class="qa-icon">📄</div>
-          <div class="qa-title">Share Plan Brochures</div>
-          <div class="qa-desc">Send plan brochures for all 4 SDA plans directly to potential students via WhatsApp, SMS, or copy link.</div>
-          <div class="qa-arrow">View Materials <span>→</span></div>
-        </div>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="page-title">Home</div>
+      <div class="topbar-right">
+        <button class="tb-btn tb-logout" onclick="doLogout()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </button>
+        <div class="tb-avatar" id="tb-avatar">EA</div>
       </div>
     </div>
 
-    <!-- REFER & EARN -->
-    <div class="page" id="page-refer">
-      <div class="refer-hero">
-        <div class="rh-content">
-          <div class="rh-top">
-            <div class="rh-left">
-              <h2>🎯 Agent Refer & Earn</h2>
-              <p>Sell any SDA plan using your referral code. Buyer gets an exclusive discount — you earn points for every successful payment.</p>
-            </div>
-            <div class="rh-right">
-              <div class="rh-pts-label">Available Points</div>
-              <div class="rh-pts-val" id="hero-pts">—</div>
-              <div class="rh-pts-sub">= ₹<span id="hero-money">—</span> withdrawable</div>
+    <div class="content">
+
+      <!-- HOME -->
+      <div class="page active" id="page-home">
+        <div class="home-banner">
+          <div class="home-banner-text">
+            <h2 id="home-welcome">Welcome back! 👋</h2>
+            <p>You're doing great as an SDA Agent. Keep sharing and earning!</p>
+          </div>
+          <div class="home-banner-img">🏆</div>
+        </div>
+        <div class="month-end-notice">
+          <div class="month-end-icon">📅</div>
+          <div class="month-end-text">
+            <strong>Month-end Payout:</strong> The SDA team reviews all agent balances at the end of each month and
+            transfers earnings directly to your registered bank account. Need money sooner? Use the
+            <strong>Withdraw</strong> tab to request early payment anytime.
+          </div>
+        </div>
+        <div class="section-title">Your Activity</div>
+        <div class="home-stats">
+          <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
+            <div class="hs-icon">⭐</div>
+            <div>
+              <div class="hs-val" id="hs-pts">—</div>
+              <div class="hs-label">Total Points Earned</div>
             </div>
           </div>
-          <div class="rh-badges">
-            <div class="rh-badge">🏷️ 4 Plans Available</div>
-            <div class="rh-badge">⭐ Points per sale</div>
-            <div class="rh-badge">💸 1 pt = ₹1</div>
-            <div class="rh-badge">⚡ Auto-credited on payment</div>
-            <div class="rh-badge">📅 Month-end payout</div>
+          <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
+            <div class="hs-icon">👥</div>
+            <div>
+              <div class="hs-val" id="hs-refs">—</div>
+              <div class="hs-label">Total Referrals</div>
+            </div>
+          </div>
+          <div class="hs-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
+            <div class="hs-icon">💰</div>
+            <div>
+              <div class="hs-val" id="hs-money">—</div>
+              <div class="hs-label">Money Earned</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">Quick Actions</div>
+        <div class="quick-actions">
+          <div class="qa-card" onclick="showPage('refer',document.querySelectorAll('.nav-item')[1])">
+            <div class="qa-icon">🔗</div>
+            <div class="qa-title">Share Referral Code</div>
+            <div class="qa-desc">Share your code with potential students and earn points per successful sale.</div>
+            <div class="qa-arrow">Go to Refer & Earn <span>→</span></div>
+          </div>
+          <div class="qa-card" onclick="showPage('materials',document.querySelectorAll('.nav-item')[2])">
+            <div class="qa-icon">📄</div>
+            <div class="qa-title">Share Plan Brochures</div>
+            <div class="qa-desc">Send plan brochures for all 4 SDA plans directly to potential students via WhatsApp,
+              SMS, or copy link.</div>
+            <div class="qa-arrow">View Materials <span>→</span></div>
           </div>
         </div>
       </div>
 
-      <div class="stats-strip">
-        <div class="ss-card c1"><div class="ss-val" id="ss-avail">—</div><div class="ss-label">Available Points</div></div>
-        <div class="ss-card c2"><div class="ss-val" id="ss-earned">—</div><div class="ss-label">Total Earned</div></div>
-        <div class="ss-card c3"><div class="ss-val" id="ss-redeemed">—</div><div class="ss-label">Redeemed</div></div>
-        <div class="ss-card c4"><div class="ss-val" id="ss-refs">—</div><div class="ss-label">Referrals</div></div>
-      </div>
-
-      <div class="pts-card">
-        <div class="pts-card-inner">
-          <div class="pts-card-top">
-            <div class="pts-brand">
-              <div class="pts-logo">SDA</div>
-              <div><div class="pts-brand-name">Agent Points Card</div><div class="pts-brand-sub">Shaheen Digital Academy</div></div>
-            </div>
-            <div class="pts-chip"></div>
-          </div>
-          <div>
-            <div class="pts-balance-label">Available Points Balance</div>
-            <div class="pts-balance"><span>⭐ </span><span id="card-pts">—</span></div>
-            <div class="pts-equiv">= ₹<span id="card-money">—</span> withdrawable (1 pt = ₹1)</div>
-          </div>
-          <div class="pts-card-bottom">
-            <div><div class="pts-holder-label">Agent Name</div><div class="pts-holder-name" id="card-name">—</div></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="redeem-btn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);" onclick="switchInnerTab('withdraw')">💳 Withdraw</button>
-              <button class="redeem-btn" onclick="switchInnerTab('redeem')">🏦 Bank Details</button>
-            </div>
-          </div>
-          <div class="pts-note">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            SDA team pays out your balance to your bank account every month-end
-          </div>
-        </div>
-      </div>
-
-      <div class="inner-tabs">
-        <button class="itab active" id="itab-share" onclick="switchInnerTab('share')">🔗 Share & Earn</button>
-        <button class="itab" id="itab-redeem" onclick="switchInnerTab('redeem')">🏦 Bank Details</button>
-        <button class="itab" id="itab-withdraw" onclick="switchInnerTab('withdraw')">💳 Withdraw</button>
-        <button class="itab" id="itab-history" onclick="switchInnerTab('history')">📊 History</button>
-      </div>
-
-      <!-- SHARE TAB -->
-      <div class="itab-panel active" id="itab-panel-share">
-        <div class="refer-main-grid">
-          <div class="ref-code-box">
-            <h3>🔗 Your Referral Code</h3>
-            <p class="box-sub">Share this with potential students. They get an exclusive discount on any SDA plan — you earn points when they pay!</p>
-            <div class="code-display">
-              <div class="code-text" id="ref-code-display">—</div>
-              <button class="copy-btn" id="copy-btn" onclick="copyCode()">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                Copy
-              </button>
-            </div>
-            <div class="discount-notice">🏷️ Students using your code get exclusive discounts on all 4 SDA plans!</div>
-            <div style="margin-bottom:12px;">
-              <div style="font-size:0.74rem;font-weight:600;color:var(--muted);margin-bottom:5px;">Share your referral link:</div>
-              <div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:0.76rem;color:var(--muted);word-break:break-all;" id="ref-link-display">—</div>
-            </div>
-            <div class="share-btns">
-              <button class="share-btn" onclick="shareWA()"><svg width="12" height="12" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
-              <button class="share-btn" onclick="copyLink()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copy Link</button>
-              <button class="share-btn" onclick="shareSMS()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>SMS</button>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <div style="background:var(--white);border:1px solid var(--border);border-radius:18px;padding:20px;">
-              <h3 style="font-weight:700;font-size:0.9rem;margin-bottom:14px;">📋 How It Works</h3>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;gap:11px;align-items:flex-start;"><div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div><div><div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Share your code</div><div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">Send your code to students interested in any SDA plan</div></div></div>
-                <div style="display:flex;gap:11px;align-items:flex-start;"><div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div><div><div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Student buys with code</div><div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">They get an exclusive discount on their chosen plan</div></div></div>
-                <div style="display:flex;gap:11px;align-items:flex-start;"><div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div><div><div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">You earn points instantly</div><div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">Points credited automatically after payment is confirmed</div></div></div>
-                <div style="display:flex;gap:11px;align-items:flex-start;"><div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div><div><div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Get paid at month-end</div><div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">SDA transfers to your bank every month-end (1 pt = ₹1)</div></div></div>
+      <!-- REFER & EARN -->
+      <div class="page" id="page-refer">
+        <div class="refer-hero">
+          <div class="rh-content">
+            <div class="rh-top">
+              <div class="rh-left">
+                <h2>🎯 Agent Refer & Earn</h2>
+                <p>Sell any SDA plan using your referral code. Buyer gets an exclusive discount — you earn points for
+                  every successful payment.</p>
+              </div>
+              <div class="rh-right">
+                <div class="rh-pts-label">Available Points</div>
+                <div class="rh-pts-val" id="hero-pts">—</div>
+                <div class="rh-pts-sub">= ₹<span id="hero-money">—</span> withdrawable</div>
               </div>
             </div>
-            <div style="background:linear-gradient(135deg,#e6f7f7,#d1f5e8);border:1px solid rgba(43,191,191,0.3);border-radius:14px;padding:16px;">
-              <div style="font-weight:700;font-size:0.86rem;margin-bottom:4px;color:var(--teal-dark);">🧪 Demo Simulation</div>
-              <div style="font-size:0.76rem;color:var(--muted);margin-bottom:10px;line-height:1.5;">Simulate a referred student completing payment to test the system.</div>
-              <button onclick="simulateReferral()" id="sim-btn" style="background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:9px;padding:9px 16px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer;width:100%;">+ Simulate Payment Received (1000 pts)</button>
+            <div class="rh-badges">
+              <div class="rh-badge">🏷️ 4 Plans Available</div>
+              <div class="rh-badge">⭐ Points per sale</div>
+              <div class="rh-badge">💸 1 pt = ₹1</div>
+              <div class="rh-badge">⚡ Auto-credited on payment</div>
+              <div class="rh-badge">📅 Month-end payout</div>
             </div>
+          </div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="ss-card c1">
+            <div class="ss-val" id="ss-avail">—</div>
+            <div class="ss-label">Available Points</div>
+          </div>
+          <div class="ss-card c2">
+            <div class="ss-val" id="ss-earned">—</div>
+            <div class="ss-label">Total Earned</div>
+          </div>
+          <div class="ss-card c3">
+            <div class="ss-val" id="ss-redeemed">—</div>
+            <div class="ss-label">Redeemed</div>
+          </div>
+          <div class="ss-card c4">
+            <div class="ss-val" id="ss-refs">—</div>
+            <div class="ss-label">Referrals</div>
+          </div>
+        </div>
+
+        <div class="pts-card">
+          <div class="pts-card-inner">
+            <div class="pts-card-top">
+              <div class="pts-brand">
+                <div class="pts-logo">SDA</div>
+                <div>
+                  <div class="pts-brand-name">Agent Points Card</div>
+                  <div class="pts-brand-sub">Shaheen Digital Academy</div>
+                </div>
+              </div>
+              <div class="pts-chip"></div>
+            </div>
+            <div>
+              <div class="pts-balance-label">Available Points Balance</div>
+              <div class="pts-balance"><span>⭐ </span><span id="card-pts">—</span></div>
+              <div class="pts-equiv">= ₹<span id="card-money">—</span> withdrawable (1 pt = ₹1)</div>
+            </div>
+            <div class="pts-card-bottom">
+              <div>
+                <div class="pts-holder-label">Agent Name</div>
+                <div class="pts-holder-name" id="card-name">—</div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="redeem-btn"
+                  style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);"
+                  onclick="switchInnerTab('withdraw')">💳 Withdraw</button>
+                <button class="redeem-btn" onclick="switchInnerTab('redeem')">🏦 Bank Details</button>
+              </div>
+            </div>
+            <div class="pts-note">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              SDA team pays out your balance to your bank account every month-end
+            </div>
+          </div>
+        </div>
+
+        <div class="inner-tabs">
+          <button class="itab active" id="itab-share" onclick="switchInnerTab('share')">🔗 Share & Earn</button>
+          <button class="itab" id="itab-redeem" onclick="switchInnerTab('redeem')">🏦 Bank Details</button>
+          <button class="itab" id="itab-withdraw" onclick="switchInnerTab('withdraw')">💳 Withdraw</button>
+          <button class="itab" id="itab-history" onclick="switchInnerTab('history')">📊 History</button>
+        </div>
+
+        <!-- SHARE TAB -->
+        <div class="itab-panel active" id="itab-panel-share">
+          <div class="refer-main-grid">
+            <div class="ref-code-box">
+              <h3>🔗 Your Referral Code</h3>
+              <p class="box-sub">Share this with potential students. They get an exclusive discount on any SDA plan —
+                you earn points when they pay!</p>
+              <div class="code-display">
+                <div class="code-text" id="ref-code-display">—</div>
+                <button class="copy-btn" id="copy-btn" onclick="copyCode()">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <div class="discount-notice">🏷️ Students using your code get exclusive discounts on all 4 SDA plans!
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="font-size:0.74rem;font-weight:600;color:var(--muted);margin-bottom:5px;">Share your referral
+                  link:</div>
+                <div
+                  style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:0.76rem;color:var(--muted);word-break:break-all;"
+                  id="ref-link-display">—</div>
+              </div>
+              <div class="share-btns">
+                <button class="share-btn" onclick="shareWA()"><svg width="12" height="12" viewBox="0 0 24 24"
+                    fill="#25D366">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>WhatsApp</button>
+                <button class="share-btn" onclick="copyLink()"><svg width="12" height="12" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>Copy Link</button>
+                <button class="share-btn" onclick="shareSMS()"><svg width="12" height="12" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>SMS</button>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="background:var(--white);border:1px solid var(--border);border-radius:18px;padding:20px;">
+                <h3 style="font-weight:700;font-size:0.9rem;margin-bottom:14px;">📋 How It Works</h3>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div style="display:flex;gap:11px;align-items:flex-start;">
+                    <div
+                      style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      1</div>
+                    <div>
+                      <div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Share your code</div>
+                      <div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">Send your code to students
+                        interested in any SDA plan</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:11px;align-items:flex-start;">
+                    <div
+                      style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      2</div>
+                    <div>
+                      <div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Student buys with code</div>
+                      <div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">They get an exclusive discount
+                        on their chosen plan</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:11px;align-items:flex-start;">
+                    <div
+                      style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      3</div>
+                    <div>
+                      <div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">You earn points instantly</div>
+                      <div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">Points credited automatically
+                        after payment is confirmed</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:11px;align-items:flex-start;">
+                    <div
+                      style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;font-weight:800;font-size:0.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      4</div>
+                    <div>
+                      <div style="font-weight:700;font-size:0.83rem;margin-bottom:1px;">Get paid at month-end</div>
+                      <div style="font-size:0.76rem;color:var(--muted);line-height:1.5;">SDA transfers to your bank
+                        every month-end (1 pt = ₹1)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="background:linear-gradient(135deg,#e6f7f7,#d1f5e8);border:1px solid rgba(43,191,191,0.3);border-radius:14px;padding:16px;">
+                <div style="font-weight:700;font-size:0.86rem;margin-bottom:4px;color:var(--teal-dark);">🧪 Demo
+                  Simulation</div>
+                <div style="font-size:0.76rem;color:var(--muted);margin-bottom:10px;line-height:1.5;">Simulate a
+                  referred student completing payment to test the system.</div>
+                <button onclick="simulateReferral()" id="sim-btn"
+                  style="background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:9px;padding:9px 16px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer;width:100%;">+
+                  Simulate Payment Received (1000 pts)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BANK DETAILS TAB -->
+        <div class="itab-panel" id="itab-panel-redeem">
+          <div class="refer-main-grid">
+            <div class="redeem-box">
+              <h3>🏦 Your Bank Account Details</h3>
+              <p class="box-sub">Enter your bank account details so SDA can transfer your earnings directly at
+                month-end. Points convert to money at 1 pt = ₹1.</p>
+              <div class="pts-breakdown">
+                <div class="pb-row"><span class="pb-label">Available Points</span><span class="pb-val teal"
+                    id="pb-avail">—</span></div>
+                <div class="pb-row"><span class="pb-label">Worth</span><span class="pb-val green" id="pb-worth">—</span>
+                </div>
+                <div class="pb-row"><span class="pb-label">Next Payout</span><span class="pb-val"
+                    style="color:#8b5cf6;">Month-end</span></div>
+              </div>
+              <div class="bank-form">
+                <div class="bank-form-title">🏦 Bank Account Details</div>
+                <div class="bank-field-grid">
+                  <div class="bank-field full">
+                    <div class="bank-label">Account Holder Name *</div>
+                    <input class="bank-input" id="bank-holder" placeholder="As on passbook / cheque" type="text">
+                  </div>
+                  <div class="bank-field">
+                    <div class="bank-label">Account Number *</div>
+                    <input class="bank-input" id="bank-accno" placeholder="e.g. 1234567890" type="text"
+                      inputmode="numeric">
+                  </div>
+                  <div class="bank-field">
+                    <div class="bank-label">Confirm Account Number *</div>
+                    <input class="bank-input" id="bank-accno2" placeholder="Re-enter account number" type="text"
+                      inputmode="numeric">
+                  </div>
+                  <div class="bank-field">
+                    <div class="bank-label">IFSC Code *</div>
+                    <input class="bank-input" id="bank-ifsc" placeholder="e.g. SBIN0001234" type="text"
+                      style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                  </div>
+                  <div class="bank-field">
+                    <div class="bank-label">Bank Name *</div>
+                    <input class="bank-input" id="bank-name" placeholder="e.g. State Bank of India" type="text">
+                  </div>
+                  <div class="bank-field full">
+                    <div class="bank-label">Branch Name</div>
+                    <input class="bank-input" id="bank-branch" placeholder="e.g. MG Road, Bangalore" type="text">
+                  </div>
+                </div>
+                <div style="margin-top:14px;">
+                  <button onclick="saveBankDetails()" id="bank-save-btn"
+                    style="background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:9px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.84rem;color:#fff;cursor:pointer;width:100%;">💾
+                    Save Bank Details</button>
+                </div>
+              </div>
+              <div class="info-note">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>SDA reviews all agent balances at month-end and initiates bank transfers. Ensure details are saved
+                  before the <strong>last day of each month</strong>.</span>
+              </div>
+            </div>
+            <div>
+              <div class="table-card" style="margin-bottom:0;">
+                <div class="table-card-head">
+                  <h3>📋 Saved Bank Details</h3>
+                </div>
+                <div id="saved-bank-display">
+                  <div style="text-align:center;color:var(--muted);padding:28px;font-size:0.84rem;">No bank details
+                    saved yet.<br>Enter your details and click Save.</div>
+                </div>
+              </div>
+              <div
+                style="margin-top:14px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:13px;padding:15px 16px;">
+                <div style="font-weight:700;font-size:0.86rem;color:#92400e;margin-bottom:6px;">📅 Month-End Payout
+                  Schedule</div>
+                <div style="font-size:0.78rem;color:#78350f;line-height:1.6;">
+                  • Admin reviews all balances on <strong>last working day</strong> of each month<br>
+                  • Bank transfers initiated within <strong>2-3 working days</strong><br>
+                  • You'll receive a notification once money is sent<br>
+                  • Minimum balance required: <strong>500 pts (₹500)</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WITHDRAW TAB -->
+        <div class="itab-panel" id="itab-panel-withdraw">
+          <div class="refer-main-grid">
+            <div class="redeem-box">
+              <h3>💳 Request Early Withdrawal</h3>
+              <p class="box-sub">Need money before month-end? Submit a withdrawal request. SDA will review and transfer
+                within 3–5 working days.</p>
+              <div class="pts-breakdown">
+                <div class="pb-row"><span class="pb-label">Available Points</span><span class="pb-val teal"
+                    id="wd-avail">—</span></div>
+                <div class="pb-row"><span class="pb-label">Worth</span><span class="pb-val green" id="wd-worth">—</span>
+                </div>
+                <div class="pb-row"><span class="pb-label">Pending Requests</span><span class="pb-val" id="wd-pending"
+                    style="color:#f59e0b;">—</span></div>
+              </div>
+              <div id="bank-on-file-notice"
+                style="background:var(--teal-light);border:1px solid rgba(43,191,191,0.3);border-radius:10px;padding:11px 14px;margin-bottom:14px;font-size:0.8rem;color:var(--teal-dark);font-weight:600;display:flex;align-items:center;gap:7px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                <span id="bank-on-file-text">No bank details saved. <span
+                    style="text-decoration:underline;cursor:pointer;" onclick="switchInnerTab('redeem')">Save bank
+                    details first →</span></span>
+              </div>
+              <div style="margin-bottom:8px;">
+                <div class="upi-label">Points to Withdraw (min. 500)</div>
+                <div class="pts-input-row">
+                  <input type="number" class="pts-input" id="pts-input" placeholder="e.g. 500" min="500"
+                    oninput="updateWithdrawPreview()">
+                  <button class="req-btn" id="req-btn" onclick="openWithdrawModal()" disabled>Request</button>
+                </div>
+                <div id="withdraw-preview" style="font-size:0.79rem;color:var(--teal);font-weight:600;min-height:18px;">
+                </div>
+              </div>
+              <div class="info-note" style="margin-top:12px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>Money will be transferred to your <strong>saved bank account</strong> within 3–5 working days.
+                  Month-end auto-payout also continues separately.</span>
+              </div>
+            </div>
+            <div>
+              <div class="table-card" style="margin-bottom:0;">
+                <div class="table-card-head">
+                  <h3>⏳ Your Pending Requests</h3>
+                </div>
+                <table class="tbl">
+                  <thead>
+                    <tr>
+                      <th>Req ID</th>
+                      <th>Points</th>
+                      <th>Amount</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pending-body">
+                    <tr>
+                      <td colspan="5" class="pending-empty">Loading…</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY TAB -->
+        <div class="itab-panel" id="itab-panel-history">
+          <div class="table-card">
+            <div class="table-card-head">
+              <h3>👥 Referral History</h3><span style="font-size:0.76rem;color:var(--muted);">Each successful payment =
+                points credited</span>
+            </div>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Date</th>
+                  <th>Plan</th>
+                  <th>Paid</th>
+                  <th>Status</th>
+                  <th>Points</th>
+                </tr>
+              </thead>
+              <tbody id="referral-body">
+                <tr>
+                  <td colspan="6" class="pending-empty">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-card">
+            <div class="table-card-head">
+              <h3>📋 Full Transaction & Points History</h3>
+            </div>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Points</th>
+                  <th>Money</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="txn-body">
+                <tr>
+                  <td colspan="6" class="pending-empty">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      <!-- BANK DETAILS TAB -->
-      <div class="itab-panel" id="itab-panel-redeem">
-        <div class="refer-main-grid">
-          <div class="redeem-box">
-            <h3>🏦 Your Bank Account Details</h3>
-            <p class="box-sub">Enter your bank account details so SDA can transfer your earnings directly at month-end. Points convert to money at 1 pt = ₹1.</p>
-            <div class="pts-breakdown">
-              <div class="pb-row"><span class="pb-label">Available Points</span><span class="pb-val teal" id="pb-avail">—</span></div>
-              <div class="pb-row"><span class="pb-label">Worth</span><span class="pb-val green" id="pb-worth">—</span></div>
-              <div class="pb-row"><span class="pb-label">Next Payout</span><span class="pb-val" style="color:#8b5cf6;">Month-end</span></div>
-            </div>
-            <div class="bank-form">
-              <div class="bank-form-title">🏦 Bank Account Details</div>
-              <div class="bank-field-grid">
-                <div class="bank-field full">
-                  <div class="bank-label">Account Holder Name *</div>
-                  <input class="bank-input" id="bank-holder" placeholder="As on passbook / cheque" type="text">
-                </div>
-                <div class="bank-field">
-                  <div class="bank-label">Account Number *</div>
-                  <input class="bank-input" id="bank-accno" placeholder="e.g. 1234567890" type="text" inputmode="numeric">
-                </div>
-                <div class="bank-field">
-                  <div class="bank-label">Confirm Account Number *</div>
-                  <input class="bank-input" id="bank-accno2" placeholder="Re-enter account number" type="text" inputmode="numeric">
-                </div>
-                <div class="bank-field">
-                  <div class="bank-label">IFSC Code *</div>
-                  <input class="bank-input" id="bank-ifsc" placeholder="e.g. SBIN0001234" type="text" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
-                </div>
-                <div class="bank-field">
-                  <div class="bank-label">Bank Name *</div>
-                  <input class="bank-input" id="bank-name" placeholder="e.g. State Bank of India" type="text">
-                </div>
-                <div class="bank-field full">
-                  <div class="bank-label">Branch Name</div>
-                  <input class="bank-input" id="bank-branch" placeholder="e.g. MG Road, Bangalore" type="text">
-                </div>
-              </div>
-              <div style="margin-top:14px;">
-                <button onclick="saveBankDetails()" id="bank-save-btn" style="background:linear-gradient(135deg,var(--teal),var(--green));border:none;border-radius:9px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.84rem;color:#fff;cursor:pointer;width:100%;">💾 Save Bank Details</button>
-              </div>
-            </div>
-            <div class="info-note">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>SDA reviews all agent balances at month-end and initiates bank transfers. Ensure details are saved before the <strong>last day of each month</strong>.</span>
-            </div>
-          </div>
-          <div>
-            <div class="table-card" style="margin-bottom:0;">
-              <div class="table-card-head"><h3>📋 Saved Bank Details</h3></div>
-              <div id="saved-bank-display">
-                <div style="text-align:center;color:var(--muted);padding:28px;font-size:0.84rem;">No bank details saved yet.<br>Enter your details and click Save.</div>
-              </div>
-            </div>
-            <div style="margin-top:14px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:13px;padding:15px 16px;">
-              <div style="font-weight:700;font-size:0.86rem;color:#92400e;margin-bottom:6px;">📅 Month-End Payout Schedule</div>
-              <div style="font-size:0.78rem;color:#78350f;line-height:1.6;">
-                • Admin reviews all balances on <strong>last working day</strong> of each month<br>
-                • Bank transfers initiated within <strong>2-3 working days</strong><br>
-                • You'll receive a notification once money is sent<br>
-                • Minimum balance required: <strong>500 pts (₹500)</strong>
-              </div>
+      <!-- MATERIALS -->
+      <div class="page" id="page-materials">
+        <div class="mat-hero">
+          <div class="mat-hero-inner">
+            <h2>📄 Sales Materials</h2>
+            <p>Ready-to-share brochures for all 4 SDA plans. Your referral code is auto-attached so you earn points on
+              every successful enrollment!</p>
+            <div class="mat-hero-badges">
+              <div class="mat-hero-badge">🎯 4 SDA Plans</div>
+              <div class="mat-hero-badge">📲 Share via WhatsApp / SMS</div>
+              <div class="mat-hero-badge">🔗 Code auto-attached</div>
             </div>
           </div>
         </div>
+        <div class="plan-cat-tabs">
+          <button class="plan-cat-tab active-all" id="pct-all" onclick="filterPlanCat('all',this)">📋 All Plans</button>
+          <button class="plan-cat-tab" id="pct-neet" onclick="filterPlanCat('neet',this)">🔬 NEET Plans</button>
+          <button class="plan-cat-tab" id="pct-foundation" onclick="filterPlanCat('foundation',this)">📚 Foundation
+            Plans (VI–X)</button>
+        </div>
+        <div id="mat-grid-container"></div>
       </div>
 
-      <!-- WITHDRAW TAB -->
-      <div class="itab-panel" id="itab-panel-withdraw">
-        <div class="refer-main-grid">
-          <div class="redeem-box">
-            <h3>💳 Request Early Withdrawal</h3>
-            <p class="box-sub">Need money before month-end? Submit a withdrawal request. SDA will review and transfer within 3–5 working days.</p>
-            <div class="pts-breakdown">
-              <div class="pb-row"><span class="pb-label">Available Points</span><span class="pb-val teal" id="wd-avail">—</span></div>
-              <div class="pb-row"><span class="pb-label">Worth</span><span class="pb-val green" id="wd-worth">—</span></div>
-              <div class="pb-row"><span class="pb-label">Pending Requests</span><span class="pb-val" id="wd-pending" style="color:#f59e0b;">—</span></div>
-            </div>
-            <div id="bank-on-file-notice" style="background:var(--teal-light);border:1px solid rgba(43,191,191,0.3);border-radius:10px;padding:11px 14px;margin-bottom:14px;font-size:0.8rem;color:var(--teal-dark);font-weight:600;display:flex;align-items:center;gap:7px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              <span id="bank-on-file-text">No bank details saved. <span style="text-decoration:underline;cursor:pointer;" onclick="switchInnerTab('redeem')">Save bank details first →</span></span>
-            </div>
-            <div style="margin-bottom:8px;">
-              <div class="upi-label">Points to Withdraw (min. 500)</div>
-              <div class="pts-input-row">
-                <input type="number" class="pts-input" id="pts-input" placeholder="e.g. 500" min="500" oninput="updateWithdrawPreview()">
-                <button class="req-btn" id="req-btn" onclick="openWithdrawModal()" disabled>Request</button>
-              </div>
-              <div id="withdraw-preview" style="font-size:0.79rem;color:var(--teal);font-weight:600;min-height:18px;"></div>
-            </div>
-            <div class="info-note" style="margin-top:12px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>Money will be transferred to your <strong>saved bank account</strong> within 3–5 working days. Month-end auto-payout also continues separately.</span>
-            </div>
-          </div>
-          <div>
-            <div class="table-card" style="margin-bottom:0;">
-              <div class="table-card-head"><h3>⏳ Your Pending Requests</h3></div>
-              <table class="tbl">
-                <thead><tr><th>Req ID</th><th>Points</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
-                <tbody id="pending-body"><tr><td colspan="5" class="pending-empty">Loading…</td></tr></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
 
-      <!-- HISTORY TAB -->
-      <div class="itab-panel" id="itab-panel-history">
-        <div class="table-card">
-          <div class="table-card-head"><h3>👥 Referral History</h3><span style="font-size:0.76rem;color:var(--muted);">Each successful payment = points credited</span></div>
-          <table class="tbl">
-            <thead><tr><th>Student</th><th>Date</th><th>Plan</th><th>Paid</th><th>Status</th><th>Points</th></tr></thead>
-            <tbody id="referral-body"><tr><td colspan="6" class="pending-empty">Loading…</td></tr></tbody>
-          </table>
-        </div>
-        <div class="table-card">
-          <div class="table-card-head"><h3>📋 Full Transaction & Points History</h3></div>
-          <table class="tbl">
-            <thead><tr><th>#</th><th>Date</th><th>Description</th><th>Points</th><th>Money</th><th>Status</th></tr></thead>
-            <tbody id="txn-body"><tr><td colspan="6" class="pending-empty">Loading…</td></tr></tbody>
-          </table>
-        </div>
+  <!-- BANK CONFIRM MODAL -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal">
+      <div class="modal-icon">🏦</div>
+      <h3>Confirm Bank Details</h3>
+      <div class="modal-detail" id="modal-detail"></div>
+      <p>Please verify the details are correct. SDA will use these for month-end payouts.</p>
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Edit</button>
+        <button class="modal-btn modal-btn-primary" id="confirm-bank-btn" onclick="confirmSaveBankDetails()">✓ Save
+          Details</button>
       </div>
     </div>
+  </div>
 
-    <!-- MATERIALS -->
-    <div class="page" id="page-materials">
-      <div class="mat-hero">
-        <div class="mat-hero-inner">
-          <h2>📄 Sales Materials</h2>
-          <p>Ready-to-share brochures for all 4 SDA plans. Your referral code is auto-attached so you earn points on every successful enrollment!</p>
-          <div class="mat-hero-badges">
-            <div class="mat-hero-badge">🎯 4 SDA Plans</div>
-            <div class="mat-hero-badge">📲 Share via WhatsApp / SMS</div>
-            <div class="mat-hero-badge">🔗 Code auto-attached</div>
-          </div>
-        </div>
+  <!-- WITHDRAW CONFIRM MODAL -->
+  <div class="modal-bg" id="withdraw-modal-bg">
+    <div class="modal">
+      <div class="modal-icon">💳</div>
+      <h3>Confirm Withdrawal Request</h3>
+      <div class="modal-detail" id="withdraw-modal-detail"></div>
+      <p>This request will be sent to the SDA team. Money will be credited to your saved bank account within 3–5 working
+        days.</p>
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-secondary" onclick="closeWithdrawModal()">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="confirm-wd-btn" onclick="confirmWithdraw()">Submit
+          Request</button>
       </div>
-      <div class="plan-cat-tabs">
-        <button class="plan-cat-tab active-all" id="pct-all" onclick="filterPlanCat('all',this)">📋 All Plans</button>
-        <button class="plan-cat-tab" id="pct-neet" onclick="filterPlanCat('neet',this)">🔬 NEET Plans</button>
-        <button class="plan-cat-tab" id="pct-foundation" onclick="filterPlanCat('foundation',this)">📚 Foundation Plans (VI–X)</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-bg" id="success-modal-bg">
+    <div class="modal">
+      <div class="modal-icon">🎉</div>
+      <h3>Bank Details Saved!</h3>
+      <p>Your bank account details have been saved. SDA will transfer your earnings to this account at month-end.</p>
+      <div class="modal-btns"><button class="modal-btn modal-btn-primary" onclick="closeSuccessModal()">Done</button>
       </div>
-      <div id="mat-grid-container"></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- BANK CONFIRM MODAL -->
-<div class="modal-bg" id="modal-bg">
-  <div class="modal">
-    <div class="modal-icon">🏦</div>
-    <h3>Confirm Bank Details</h3>
-    <div class="modal-detail" id="modal-detail"></div>
-    <p>Please verify the details are correct. SDA will use these for month-end payouts.</p>
-    <div class="modal-btns">
-      <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Edit</button>
-      <button class="modal-btn modal-btn-primary" id="confirm-bank-btn" onclick="confirmSaveBankDetails()">✓ Save Details</button>
     </div>
   </div>
-</div>
 
-<!-- WITHDRAW CONFIRM MODAL -->
-<div class="modal-bg" id="withdraw-modal-bg">
-  <div class="modal">
-    <div class="modal-icon">💳</div>
-    <h3>Confirm Withdrawal Request</h3>
-    <div class="modal-detail" id="withdraw-modal-detail"></div>
-    <p>This request will be sent to the SDA team. Money will be credited to your saved bank account within 3–5 working days.</p>
-    <div class="modal-btns">
-      <button class="modal-btn modal-btn-secondary" onclick="closeWithdrawModal()">Cancel</button>
-      <button class="modal-btn modal-btn-primary" id="confirm-wd-btn" onclick="confirmWithdraw()">Submit Request</button>
+  <!-- WITHDRAW SUCCESS MODAL -->
+  <div class="modal-bg" id="withdraw-success-modal-bg">
+    <div class="modal">
+      <div class="modal-icon">✅</div>
+      <h3>Request Submitted!</h3>
+      <p>Your withdrawal request has been sent to the SDA team. Money will be credited to your bank account within 3–5
+        working days.</p>
+      <div class="modal-btns"><button class="modal-btn modal-btn-primary"
+          onclick="closeWithdrawSuccessModal()">Done</button></div>
     </div>
   </div>
-</div>
 
-<!-- SUCCESS MODAL -->
-<div class="modal-bg" id="success-modal-bg">
-  <div class="modal">
-    <div class="modal-icon">🎉</div>
-    <h3>Bank Details Saved!</h3>
-    <p>Your bank account details have been saved. SDA will transfer your earnings to this account at month-end.</p>
-    <div class="modal-btns"><button class="modal-btn modal-btn-primary" onclick="closeSuccessModal()">Done</button></div>
+  <!-- MATERIAL SHARE MODAL -->
+  <div class="modal-bg" id="mat-share-modal-bg">
+    <div class="modal" style="max-width:500px;">
+      <div class="modal-icon" id="mat-modal-icon">📄</div>
+      <h3 id="mat-modal-title">Share Material</h3>
+      <div class="preview-msg-label">Preview Message</div>
+      <div class="preview-msg-box" id="mat-preview-msg"></div>
+      <div class="share-option-grid" id="mat-share-options"></div>
+      <div class="modal-btns"><button class="modal-btn modal-btn-secondary"
+          onclick="closeMatShareModal()">Close</button></div>
+    </div>
   </div>
-</div>
 
-<!-- WITHDRAW SUCCESS MODAL -->
-<div class="modal-bg" id="withdraw-success-modal-bg">
-  <div class="modal">
-    <div class="modal-icon">✅</div>
-    <h3>Request Submitted!</h3>
-    <p>Your withdrawal request has been sent to the SDA team. Money will be credited to your bank account within 3–5 working days.</p>
-    <div class="modal-btns"><button class="modal-btn modal-btn-primary" onclick="closeWithdrawSuccessModal()">Done</button></div>
-  </div>
-</div>
+  <div class="toast" id="toast"></div>
 
-<!-- MATERIAL SHARE MODAL -->
-<div class="modal-bg" id="mat-share-modal-bg">
-  <div class="modal" style="max-width:500px;">
-    <div class="modal-icon" id="mat-modal-icon">📄</div>
-    <h3 id="mat-modal-title">Share Material</h3>
-    <div class="preview-msg-label">Preview Message</div>
-    <div class="preview-msg-box" id="mat-preview-msg"></div>
-    <div class="share-option-grid" id="mat-share-options"></div>
-    <div class="modal-btns"><button class="modal-btn modal-btn-secondary" onclick="closeMatShareModal()">Close</button></div>
-  </div>
-</div>
+  <script>
+    /* ══════════════════════════════════
+       CONFIG — change BASE_URL to your actual backend
+    ══════════════════════════════════ */
+    const BASE_URL = '';; // ← change this for production
 
-<div class="toast" id="toast"></div>
+    let TOKEN = localStorage.getItem('sda_agent_token');
+    let AGENT = JSON.parse(localStorage.getItem('sda_agent_data') || 'null');
+    let currentMatShare = null;
 
-<script>
-/* ══════════════════════════════════
-   CONFIG — change BASE_URL to your actual backend
-══════════════════════════════════ */
-const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:4000'
-  : 'https://api.shaheendigital.in'; // ← change this for production
+    /* ── API helper ── */
+    async function api(method, path, body) {
+      try {
+        const opts = {
+          method,
+          headers: { 'Content-Type': 'application/json', ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}) }
+        };
+        if (body) opts.body = JSON.stringify(body);
+        const r = await fetch(BASE_URL + path, opts);
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'API error');
+        setApiStatus(true);
+        return data;
+      } catch (e) {
+        if (e.message !== 'Failed to fetch') throw e;
+        setApiStatus(false);
+        // Offline fallback — use localStorage
+        return offlineFallback(method, path, body);
+      }
+    }
 
-let TOKEN = localStorage.getItem('sda_agent_token');
-let AGENT = JSON.parse(localStorage.getItem('sda_agent_data') || 'null');
-let currentMatShare = null;
+    function setApiStatus(online) {
+      const ind = document.getElementById('api-status-indicator');
+      const txt = document.getElementById('api-status-text');
+      if (!ind) return;
+      ind.className = 'api-status' + (online ? '' : ' offline');
+      txt.textContent = online ? 'Live' : 'Offline Mode';
+      ind.querySelector('.api-dot').style.background = online ? 'var(--teal)' : '#dc2626';
+    }
 
-/* ── API helper ── */
-async function api(method, path, body) {
-  try {
-    const opts = {
-      method,
-      headers: { 'Content-Type': 'application/json', ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}) }
-    };
-    if (body) opts.body = JSON.stringify(body);
-    const r = await fetch(BASE_URL + path, opts);
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || 'API error');
-    setApiStatus(true);
-    return data;
-  } catch (e) {
-    if (e.message !== 'Failed to fetch') throw e;
-    setApiStatus(false);
-    // Offline fallback — use localStorage
-    return offlineFallback(method, path, body);
-  }
-}
+    /* ── Offline fallback using localStorage ── */
+    function offlineFallback(method, path, body) {
+      const key = 'sda_offline_' + AGENT?.id;
+      let store = JSON.parse(localStorage.getItem(key) || '{}');
+      if (!store.agent) store.agent = AGENT;
+      if (!store.txns) store.txns = [];
+      if (!store.refs) store.refs = [];
+      if (!store.wrs) store.wrs = [];
 
-function setApiStatus(online) {
-  const ind = document.getElementById('api-status-indicator');
-  const txt = document.getElementById('api-status-text');
-  if (!ind) return;
-  ind.className = 'api-status' + (online ? '' : ' offline');
-  txt.textContent = online ? 'Live' : 'Offline Mode';
-  ind.querySelector('.api-dot').style.background = online ? 'var(--teal)' : '#dc2626';
-}
+      if (path === '/api/agent/me' && method === 'GET') return { agent: store.agent };
 
-/* ── Offline fallback using localStorage ── */
-function offlineFallback(method, path, body) {
-  const key = 'sda_offline_' + AGENT?.id;
-  let store = JSON.parse(localStorage.getItem(key) || '{}');
-  if (!store.agent) store.agent = AGENT;
-  if (!store.txns) store.txns = [];
-  if (!store.refs) store.refs = [];
-  if (!store.wrs) store.wrs = [];
+      if (path === '/api/agent/me/bank' && method === 'PUT') {
+        store.agent.bank = body;
+        AGENT = store.agent;
+        localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
+        localStorage.setItem(key, JSON.stringify(store));
+        return { agent: store.agent, message: 'Saved (offline)' };
+      }
 
-  if (path === '/api/agent/me' && method === 'GET') return { agent: store.agent };
+      if (path === '/api/agent/me/simulate' && method === 'POST') {
+        const names = ['Priya Nair', 'Rohan Das', 'Sneha Krishnan', 'Aditya Sharma'];
+        const plans = ['SDA Premium (NEET)', 'SDA Elite (NEET)', 'SDA Foundation Premium', 'SDA Foundation Elite'];
+        const n = names[Math.floor(Math.random() * names.length)];
+        const p = plans[Math.floor(Math.random() * plans.length)];
+        store.agent.available += 1000; store.agent.totalEarned += 1000; store.agent.refs += 1;
+        const ref = { id: 'REF' + Date.now(), agentId: store.agent.id, studentName: n, studentEmail: n.toLowerCase().replace(' ', '') + '@email.com', date: dateStr(), plan: p, paid: '₹5,499', pts: 1000, status: 'paid' };
+        const txn = { id: 'TXN' + Date.now(), agentId: store.agent.id, date: dateStr(), desc: 'Referral: ' + n, subdesc: p + ' purchased', pts: '+1000', money: '+₹1000', status: 'credited' };
+        store.refs.unshift(ref); store.txns.unshift(txn);
+        AGENT = store.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); localStorage.setItem(key, JSON.stringify(store));
+        return { referral: ref, transaction: txn, agent: store.agent };
+      }
 
-  if (path === '/api/agent/me/bank' && method === 'PUT') {
-    store.agent.bank = body;
-    AGENT = store.agent;
-    localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
-    localStorage.setItem(key, JSON.stringify(store));
-    return { agent: store.agent, message: 'Saved (offline)' };
-  }
+      if (path === '/api/agent/me/withdrawals' && method === 'POST') {
+        const wr = { id: 'WR' + Date.now(), agentId: store.agent.id, pts: body.pts, amount: '₹' + body.pts.toLocaleString(), date: dateStr(), status: 'pending', bank: store.agent.bank };
+        store.wrs.unshift(wr); store.txns.unshift({ id: 'TXN' + Date.now(), agentId: store.agent.id, date: dateStr(), desc: 'Withdrawal Request: ' + wr.id, subdesc: 'Bank: ' + store.agent.bank?.bname, pts: '-' + body.pts, money: '-₹' + body.pts.toLocaleString(), status: 'processing' });
+        localStorage.setItem(key, JSON.stringify(store));
+        return { withdrawal: wr, agent: store.agent };
+      }
 
-  if (path === '/api/agent/me/simulate' && method === 'POST') {
-    const names = ['Priya Nair','Rohan Das','Sneha Krishnan','Aditya Sharma'];
-    const plans = ['SDA Premium (NEET)','SDA Elite (NEET)','SDA Foundation Premium','SDA Foundation Elite'];
-    const n = names[Math.floor(Math.random()*names.length)];
-    const p = plans[Math.floor(Math.random()*plans.length)];
-    store.agent.available += 1000; store.agent.totalEarned += 1000; store.agent.refs += 1;
-    const ref = { id:'REF'+Date.now(), agentId:store.agent.id, studentName:n, studentEmail:n.toLowerCase().replace(' ','')+'@email.com', date:dateStr(), plan:p, paid:'₹5,499', pts:1000, status:'paid' };
-    const txn = { id:'TXN'+Date.now(), agentId:store.agent.id, date:dateStr(), desc:'Referral: '+n, subdesc:p+' purchased', pts:'+1000', money:'+₹1000', status:'credited' };
-    store.refs.unshift(ref); store.txns.unshift(txn);
-    AGENT = store.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); localStorage.setItem(key, JSON.stringify(store));
-    return { referral:ref, transaction:txn, agent:store.agent };
-  }
+      if (path === '/api/agent/me/withdrawals' && method === 'GET') return { withdrawals: store.wrs };
+      if (path === '/api/agent/me/referrals' && method === 'GET') return { referrals: store.refs };
+      if (path === '/api/agent/me/transactions' && method === 'GET') return { transactions: store.txns };
 
-  if (path === '/api/agent/me/withdrawals' && method === 'POST') {
-    const wr = { id:'WR'+Date.now(), agentId:store.agent.id, pts:body.pts, amount:'₹'+body.pts.toLocaleString(), date:dateStr(), status:'pending', bank:store.agent.bank };
-    store.wrs.unshift(wr); store.txns.unshift({ id:'TXN'+Date.now(), agentId:store.agent.id, date:dateStr(), desc:'Withdrawal Request: '+wr.id, subdesc:'Bank: '+store.agent.bank?.bname, pts:'-'+body.pts, money:'-₹'+body.pts.toLocaleString(), status:'processing' });
-    localStorage.setItem(key, JSON.stringify(store));
-    return { withdrawal:wr, agent:store.agent };
-  }
+      return {};
+    }
 
-  if (path === '/api/agent/me/withdrawals' && method === 'GET') return { withdrawals: store.wrs };
-  if (path === '/api/agent/me/referrals' && method === 'GET') return { referrals: store.refs };
-  if (path === '/api/agent/me/transactions' && method === 'GET') return { transactions: store.txns };
+    /* ══════════════════════════════════
+       AUTH
+    ══════════════════════════════════ */
+    async function doLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+      btn.textContent = 'Signing in…'; btn.classList.add('login-loading');
+      try {
+        const data = await api('POST', '/api/agent/login', { email, password });
+        TOKEN = data.token; AGENT = data.agent;
+        localStorage.setItem('sda_agent_token', TOKEN);
+        localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
+        document.getElementById('login-screen').style.display = 'none';
+        initPortal();
+      } catch (e) {
+        errEl.textContent = e.message; errEl.style.display = 'block';
+        btn.textContent = 'Sign In to Agent Portal'; btn.classList.remove('login-loading');
+      }
+    }
 
-  return {};
-}
+    function doLogout() {
+      TOKEN = null; AGENT = null;
+      localStorage.removeItem('sda_agent_token');
+      localStorage.removeItem('sda_agent_data');
+      location.reload();
+    }
 
-/* ══════════════════════════════════
-   AUTH
-══════════════════════════════════ */
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const btn = document.getElementById('login-btn');
-  const errEl = document.getElementById('login-error');
-  errEl.style.display = 'none';
-  btn.textContent = 'Signing in…'; btn.classList.add('login-loading');
-  try {
-    const data = await api('POST', '/api/agent/login', { email, password });
-    TOKEN = data.token; AGENT = data.agent;
-    localStorage.setItem('sda_agent_token', TOKEN);
-    localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
-    document.getElementById('login-screen').style.display = 'none';
-    initPortal();
-  } catch(e) {
-    errEl.textContent = e.message; errEl.style.display = 'block';
-    btn.textContent = 'Sign In to Agent Portal'; btn.classList.remove('login-loading');
-  }
-}
+    /* ══════════════════════════════════
+       INIT
+    ══════════════════════════════════ */
+    async function initPortal() {
+      // If already logged in, skip login screen
+      if (TOKEN && AGENT) {
+        document.getElementById('login-screen').style.display = 'none';
+        // Refresh agent data from server
+        try {
+          const data = await api('GET', '/api/agent/me');
+          AGENT = data.agent;
+          localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
+        } catch (e) { /* use cached */ }
+        renderPortal();
+        renderMaterialsGrid('all');
+        await loadHistory();
+      }
+    }
 
-function doLogout() {
-  TOKEN = null; AGENT = null;
-  localStorage.removeItem('sda_agent_token');
-  localStorage.removeItem('sda_agent_data');
-  location.reload();
-}
+    function renderPortal() {
+      if (!AGENT) return;
+      const initials = AGENT.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+      document.getElementById('tb-avatar').textContent = initials;
+      document.getElementById('home-welcome').textContent = `Welcome back, ${AGENT.name.split(' ')[0]}! 👋`;
+      document.getElementById('card-name').textContent = AGENT.name;
 
-/* ══════════════════════════════════
-   INIT
-══════════════════════════════════ */
-async function initPortal() {
-  // If already logged in, skip login screen
-  if (TOKEN && AGENT) {
-    document.getElementById('login-screen').style.display = 'none';
-    // Refresh agent data from server
-    try {
-      const data = await api('GET', '/api/agent/me');
-      AGENT = data.agent;
-      localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
-    } catch(e) { /* use cached */ }
-    renderPortal();
-    renderMaterialsGrid('all');
-    await loadHistory();
-  }
-}
+      // populate referral code
+      const code = AGENT.code;
+      const link = `https://shaheendigital.in/join?ref=${code}`;
+      document.getElementById('ref-code-display').textContent = code;
+      document.getElementById('ref-link-display').textContent = link;
 
-function renderPortal() {
-  if (!AGENT) return;
-  const initials = AGENT.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('tb-avatar').textContent = initials;
-  document.getElementById('home-welcome').textContent = `Welcome back, ${AGENT.name.split(' ')[0]}! 👋`;
-  document.getElementById('card-name').textContent = AGENT.name;
+      // update all stats
+      const avail = AGENT.available || 0;
+      const earned = AGENT.totalEarned || 0;
+      const refs = AGENT.refs || 0;
+      const redeemed = earned - avail;
 
-  // populate referral code
-  const code = AGENT.code;
-  const link = `https://shaheendigital.in/join?ref=${code}`;
-  document.getElementById('ref-code-display').textContent = code;
-  document.getElementById('ref-link-display').textContent = link;
+      setText('hs-pts', earned.toLocaleString());
+      setText('hs-refs', refs);
+      setText('hs-money', '₹' + earned.toLocaleString());
+      setText('hero-pts', avail.toLocaleString());
+      setText('hero-money', avail.toLocaleString());
+      setText('card-pts', avail.toLocaleString());
+      setText('card-money', avail.toLocaleString());
+      setText('ss-avail', avail.toLocaleString());
+      setText('ss-earned', earned.toLocaleString());
+      setText('ss-redeemed', Math.max(0, redeemed).toLocaleString());
+      setText('ss-refs', refs);
+      setText('pb-avail', avail.toLocaleString() + ' pts');
+      setText('pb-worth', '₹' + avail.toLocaleString());
+      setText('wd-avail', avail.toLocaleString() + ' pts');
+      setText('wd-worth', '₹' + avail.toLocaleString());
 
-  // update all stats
-  const avail = AGENT.available || 0;
-  const earned = AGENT.totalEarned || 0;
-  const refs = AGENT.refs || 0;
-  const redeemed = earned - avail;
+      // populate bank form if exists
+      if (AGENT.bank) {
+        document.getElementById('bank-holder').value = AGENT.bank.holder || '';
+        document.getElementById('bank-accno').value = AGENT.bank.acc || '';
+        document.getElementById('bank-accno2').value = AGENT.bank.acc || '';
+        document.getElementById('bank-ifsc').value = AGENT.bank.ifsc || '';
+        document.getElementById('bank-name').value = AGENT.bank.bname || '';
+        document.getElementById('bank-branch').value = AGENT.bank.branch || '';
+        renderSavedBank();
+        updateBankOnFileNotice();
+      }
+    }
 
-  setText('hs-pts', earned.toLocaleString());
-  setText('hs-refs', refs);
-  setText('hs-money', '₹' + earned.toLocaleString());
-  setText('hero-pts', avail.toLocaleString());
-  setText('hero-money', avail.toLocaleString());
-  setText('card-pts', avail.toLocaleString());
-  setText('card-money', avail.toLocaleString());
-  setText('ss-avail', avail.toLocaleString());
-  setText('ss-earned', earned.toLocaleString());
-  setText('ss-redeemed', Math.max(0,redeemed).toLocaleString());
-  setText('ss-refs', refs);
-  setText('pb-avail', avail.toLocaleString() + ' pts');
-  setText('pb-worth', '₹' + avail.toLocaleString());
-  setText('wd-avail', avail.toLocaleString() + ' pts');
-  setText('wd-worth', '₹' + avail.toLocaleString());
+    async function loadHistory() {
+      try {
+        const [refs, txns, wrs] = await Promise.all([
+          api('GET', '/api/agent/me/referrals'),
+          api('GET', '/api/agent/me/transactions'),
+          api('GET', '/api/agent/me/withdrawals'),
+        ]);
+        renderReferralTable(refs.referrals || []);
+        renderTxnTable(txns.transactions || []);
+        renderPendingTable(wrs.withdrawals || []);
+        // count pending WRs
+        const pendingWRs = (wrs.withdrawals || []).filter(w => w.status === 'pending');
+        const pendingAmt = pendingWRs.reduce((s, w) => s + w.pts, 0);
+        setText('wd-pending', pendingAmt > 0 ? '₹' + pendingAmt.toLocaleString() : '₹0');
+      } catch (e) { /* silent */ }
+    }
 
-  // populate bank form if exists
-  if (AGENT.bank) {
-    document.getElementById('bank-holder').value = AGENT.bank.holder || '';
-    document.getElementById('bank-accno').value = AGENT.bank.acc || '';
-    document.getElementById('bank-accno2').value = AGENT.bank.acc || '';
-    document.getElementById('bank-ifsc').value = AGENT.bank.ifsc || '';
-    document.getElementById('bank-name').value = AGENT.bank.bname || '';
-    document.getElementById('bank-branch').value = AGENT.bank.branch || '';
-    renderSavedBank();
-    updateBankOnFileNotice();
-  }
-}
+    /* ══════════════════════════════════
+       NAV
+    ══════════════════════════════════ */
+    function showPage(name, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.getElementById('page-title').textContent = { home: 'Home', refer: 'Refer & Earn', materials: 'Materials' }[name] || name;
+      if (btn) btn.classList.add('active');
+      else document.querySelectorAll('.nav-item')[{ home: 0, refer: 1, materials: 2 }[name] || 0].classList.add('active');
+      if (window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+      if (name === 'refer') loadHistory();
+    }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    function switchInnerTab(tab) {
+      ['share', 'redeem', 'withdraw', 'history'].forEach(t => {
+        document.getElementById('itab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('itab-panel-' + t).classList.toggle('active', t === tab);
+      });
+      if (tab === 'withdraw' || tab === 'history') loadHistory();
+    }
 
-async function loadHistory() {
-  try {
-    const [refs, txns, wrs] = await Promise.all([
-      api('GET', '/api/agent/me/referrals'),
-      api('GET', '/api/agent/me/transactions'),
-      api('GET', '/api/agent/me/withdrawals'),
-    ]);
-    renderReferralTable(refs.referrals || []);
-    renderTxnTable(txns.transactions || []);
-    renderPendingTable(wrs.withdrawals || []);
-    // count pending WRs
-    const pendingWRs = (wrs.withdrawals || []).filter(w=>w.status==='pending');
-    const pendingAmt = pendingWRs.reduce((s,w)=>s+w.pts,0);
-    setText('wd-pending', pendingAmt > 0 ? '₹'+pendingAmt.toLocaleString() : '₹0');
-  } catch(e) { /* silent */ }
-}
-
-/* ══════════════════════════════════
-   NAV
-══════════════════════════════════ */
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.getElementById('page-title').textContent={home:'Home',refer:'Refer & Earn',materials:'Materials'}[name]||name;
-  if(btn) btn.classList.add('active');
-  else document.querySelectorAll('.nav-item')[{home:0,refer:1,materials:2}[name]||0].classList.add('active');
-  if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
-  if(name==='refer') loadHistory();
-}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('open');}
-function switchInnerTab(tab){
-  ['share','redeem','withdraw','history'].forEach(t=>{
-    document.getElementById('itab-'+t).classList.toggle('active',t===tab);
-    document.getElementById('itab-panel-'+t).classList.toggle('active',t===tab);
-  });
-  if(tab==='withdraw'||tab==='history') loadHistory();
-}
-
-/* ══════════════════════════════════
-   BANK DETAILS
-══════════════════════════════════ */
-function saveBankDetails() {
-  const holder = document.getElementById('bank-holder').value.trim();
-  const acc = document.getElementById('bank-accno').value.trim();
-  const acc2 = document.getElementById('bank-accno2').value.trim();
-  const ifsc = document.getElementById('bank-ifsc').value.trim();
-  const bname = document.getElementById('bank-name').value.trim();
-  if(!holder||!acc||!ifsc||!bname){toast('⚠️ Please fill all required fields');return;}
-  if(acc!==acc2){toast('⚠️ Account numbers do not match');return;}
-  if(ifsc.length<9||ifsc.length>11){toast('⚠️ Enter a valid IFSC code');return;}
-  document.getElementById('modal-detail').innerHTML=`
+    /* ══════════════════════════════════
+       BANK DETAILS
+    ══════════════════════════════════ */
+    function saveBankDetails() {
+      const holder = document.getElementById('bank-holder').value.trim();
+      const acc = document.getElementById('bank-accno').value.trim();
+      const acc2 = document.getElementById('bank-accno2').value.trim();
+      const ifsc = document.getElementById('bank-ifsc').value.trim();
+      const bname = document.getElementById('bank-name').value.trim();
+      if (!holder || !acc || !ifsc || !bname) { toast('⚠️ Please fill all required fields'); return; }
+      if (acc !== acc2) { toast('⚠️ Account numbers do not match'); return; }
+      if (ifsc.length < 9 || ifsc.length > 11) { toast('⚠️ Enter a valid IFSC code'); return; }
+      document.getElementById('modal-detail').innerHTML = `
     <div class="modal-detail-row"><span class="k">Account Holder</span><span class="v">${holder}</span></div>
-    <div class="modal-detail-row"><span class="k">Account Number</span><span class="v">${acc.replace(/./g,(c,i)=>i<acc.length-4?'•':c)}</span></div>
+    <div class="modal-detail-row"><span class="k">Account Number</span><span class="v">${acc.replace(/./g, (c, i) => i < acc.length - 4 ? '•' : c)}</span></div>
     <div class="modal-detail-row"><span class="k">IFSC Code</span><span class="v">${ifsc}</span></div>
     <div class="modal-detail-row"><span class="k">Bank Name</span><span class="v">${bname}</span></div>
-    <div class="modal-detail-row"><span class="k">Branch</span><span class="v">${document.getElementById('bank-branch').value||'—'}</span></div>`;
-  document.getElementById('modal-bg').classList.add('open');
-}
+    <div class="modal-detail-row"><span class="k">Branch</span><span class="v">${document.getElementById('bank-branch').value || '—'}</span></div>`;
+      document.getElementById('modal-bg').classList.add('open');
+    }
 
-async function confirmSaveBankDetails() {
-  const btn = document.getElementById('confirm-bank-btn');
-  btn.textContent = 'Saving…'; btn.disabled = true;
-  try {
-    const bankData = {
-      holder: document.getElementById('bank-holder').value.trim(),
-      acc: document.getElementById('bank-accno').value.trim(),
-      ifsc: document.getElementById('bank-ifsc').value.trim(),
-      bname: document.getElementById('bank-name').value.trim(),
-      branch: document.getElementById('bank-branch').value.trim()
-    };
-    const data = await api('PUT', '/api/agent/me/bank', bankData);
-    AGENT = data.agent || { ...AGENT, bank: bankData };
-    localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
-    closeModal();
-    renderSavedBank();
-    updateBankOnFileNotice();
-    document.getElementById('success-modal-bg').classList.add('open');
-  } catch(e) { toast('❌ Error: ' + e.message); }
-  finally { btn.textContent = '✓ Save Details'; btn.disabled = false; }
-}
+    async function confirmSaveBankDetails() {
+      const btn = document.getElementById('confirm-bank-btn');
+      btn.textContent = 'Saving…'; btn.disabled = true;
+      try {
+        const bankData = {
+          holder: document.getElementById('bank-holder').value.trim(),
+          acc: document.getElementById('bank-accno').value.trim(),
+          ifsc: document.getElementById('bank-ifsc').value.trim(),
+          bname: document.getElementById('bank-name').value.trim(),
+          branch: document.getElementById('bank-branch').value.trim()
+        };
+        const data = await api('PUT', '/api/agent/me/bank', bankData);
+        AGENT = data.agent || { ...AGENT, bank: bankData };
+        localStorage.setItem('sda_agent_data', JSON.stringify(AGENT));
+        closeModal();
+        renderSavedBank();
+        updateBankOnFileNotice();
+        document.getElementById('success-modal-bg').classList.add('open');
+      } catch (e) { toast('❌ Error: ' + e.message); }
+      finally { btn.textContent = '✓ Save Details'; btn.disabled = false; }
+    }
 
-function renderSavedBank() {
-  const b = AGENT?.bank;
-  if(!b) return;
-  const masked = b.acc.replace(/./g,(c,i)=>i<b.acc.length-4?'•':c);
-  document.getElementById('saved-bank-display').innerHTML=`
+    function renderSavedBank() {
+      const b = AGENT?.bank;
+      if (!b) return;
+      const masked = b.acc.replace(/./g, (c, i) => i < b.acc.length - 4 ? '•' : c);
+      document.getElementById('saved-bank-display').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:0;">
       <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.82rem;"><span style="color:var(--muted);">Account Holder</span><span style="font-weight:700;">${b.holder}</span></div>
       <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.82rem;"><span style="color:var(--muted);">Account Number</span><span style="font-weight:700;font-family:monospace;">${masked}</span></div>
       <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.82rem;"><span style="color:var(--muted);">IFSC Code</span><span style="font-weight:700;">${b.ifsc}</span></div>
       <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.82rem;"><span style="color:var(--muted);">Bank Name</span><span style="font-weight:700;">${b.bname}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:0.82rem;"><span style="color:var(--muted);">Branch</span><span style="font-weight:700;">${b.branch||'—'}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:0.82rem;"><span style="color:var(--muted);">Branch</span><span style="font-weight:700;">${b.branch || '—'}</span></div>
     </div>
     <div style="margin-top:12px;background:var(--teal-light);border-radius:9px;padding:9px 12px;font-size:0.76rem;color:var(--teal-dark);font-weight:600;">✓ Bank details saved — SDA will transfer at month-end</div>`;
-}
+    }
 
-function updateBankOnFileNotice() {
-  const el = document.getElementById('bank-on-file-text');
-  const btn = document.getElementById('req-btn');
-  if(AGENT?.bank) {
-    el.textContent = 'Bank on file: ' + AGENT.bank.bname + ' (••••' + AGENT.bank.acc.slice(-4) + ')';
-    if(btn) btn.disabled = false;
-  } else {
-    el.innerHTML = 'No bank details saved. <span style="text-decoration:underline;cursor:pointer;" onclick="switchInnerTab(\'redeem\')">Save bank details first →</span>';
-    if(btn) btn.disabled = true;
-  }
-}
+    function updateBankOnFileNotice() {
+      const el = document.getElementById('bank-on-file-text');
+      const btn = document.getElementById('req-btn');
+      if (AGENT?.bank) {
+        el.textContent = 'Bank on file: ' + AGENT.bank.bname + ' (••••' + AGENT.bank.acc.slice(-4) + ')';
+        if (btn) btn.disabled = false;
+      } else {
+        el.innerHTML = 'No bank details saved. <span style="text-decoration:underline;cursor:pointer;" onclick="switchInnerTab(\'redeem\')">Save bank details first →</span>';
+        if (btn) btn.disabled = true;
+      }
+    }
 
-function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
-function closeSuccessModal(){document.getElementById('success-modal-bg').classList.remove('open');}
+    function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+    function closeSuccessModal() { document.getElementById('success-modal-bg').classList.remove('open'); }
 
-/* ══════════════════════════════════
-   WITHDRAW
-══════════════════════════════════ */
-function updateWithdrawPreview() {
-  const val = parseInt(document.getElementById('pts-input').value)||0;
-  const prev = document.getElementById('withdraw-preview');
-  const btn = document.getElementById('req-btn');
-  if(!AGENT?.bank){if(prev)prev.textContent='';return;}
-  if(val>=500&&val<=(AGENT.available||0)){prev.textContent=`= ₹${val.toLocaleString()} will be transferred to your bank`;prev.style.color='var(--teal)';if(btn)btn.disabled=false;}
-  else if(val>(AGENT.available||0)){prev.textContent=`⚠️ Exceeds available points (${AGENT.available||0})`;prev.style.color='var(--rose)';if(btn)btn.disabled=true;}
-  else if(val>0){prev.textContent='⚠️ Minimum withdrawal is 500 points';prev.style.color='#f59e0b';if(btn)btn.disabled=true;}
-  else{prev.textContent='';if(btn&&AGENT?.bank)btn.disabled=false;}
-}
+    /* ══════════════════════════════════
+       WITHDRAW
+    ══════════════════════════════════ */
+    function updateWithdrawPreview() {
+      const val = parseInt(document.getElementById('pts-input').value) || 0;
+      const prev = document.getElementById('withdraw-preview');
+      const btn = document.getElementById('req-btn');
+      if (!AGENT?.bank) { if (prev) prev.textContent = ''; return; }
+      if (val >= 500 && val <= (AGENT.available || 0)) { prev.textContent = `= ₹${val.toLocaleString()} will be transferred to your bank`; prev.style.color = 'var(--teal)'; if (btn) btn.disabled = false; }
+      else if (val > (AGENT.available || 0)) { prev.textContent = `⚠️ Exceeds available points (${AGENT.available || 0})`; prev.style.color = 'var(--rose)'; if (btn) btn.disabled = true; }
+      else if (val > 0) { prev.textContent = '⚠️ Minimum withdrawal is 500 points'; prev.style.color = '#f59e0b'; if (btn) btn.disabled = true; }
+      else { prev.textContent = ''; if (btn && AGENT?.bank) btn.disabled = false; }
+    }
 
-function openWithdrawModal() {
-  if(!AGENT?.bank){toast('⚠️ Please save your bank details first');switchInnerTab('redeem');return;}
-  const pts = parseInt(document.getElementById('pts-input').value);
-  if(!pts||pts<500){toast('⚠️ Enter at least 500 points');return;}
-  if(pts>(AGENT.available||0)){toast('⚠️ Not enough points');return;}
-  const b = AGENT.bank;
-  document.getElementById('withdraw-modal-detail').innerHTML=`
+    function openWithdrawModal() {
+      if (!AGENT?.bank) { toast('⚠️ Please save your bank details first'); switchInnerTab('redeem'); return; }
+      const pts = parseInt(document.getElementById('pts-input').value);
+      if (!pts || pts < 500) { toast('⚠️ Enter at least 500 points'); return; }
+      if (pts > (AGENT.available || 0)) { toast('⚠️ Not enough points'); return; }
+      const b = AGENT.bank;
+      document.getElementById('withdraw-modal-detail').innerHTML = `
     <div class="modal-detail-row"><span class="k">Points to Withdraw</span><span class="v" style="color:var(--teal)">${pts.toLocaleString()} pts</span></div>
     <div class="modal-detail-row"><span class="k">Money Amount</span><span class="v" style="color:var(--green)">₹${pts.toLocaleString()}</span></div>
     <div class="modal-detail-row"><span class="k">Account Holder</span><span class="v">${b.holder}</span></div>
-    <div class="modal-detail-row"><span class="k">Account No.</span><span class="v" style="font-family:monospace;">${b.acc.replace(/./g,(c,i)=>i<b.acc.length-4?'•':c)}</span></div>
+    <div class="modal-detail-row"><span class="k">Account No.</span><span class="v" style="font-family:monospace;">${b.acc.replace(/./g, (c, i) => i < b.acc.length - 4 ? '•' : c)}</span></div>
     <div class="modal-detail-row"><span class="k">IFSC</span><span class="v">${b.ifsc}</span></div>
     <div class="modal-detail-row"><span class="k">Bank</span><span class="v">${b.bname}</span></div>`;
-  document.getElementById('withdraw-modal-bg').classList.add('open');
-}
+      document.getElementById('withdraw-modal-bg').classList.add('open');
+    }
 
-function closeWithdrawModal(){document.getElementById('withdraw-modal-bg').classList.remove('open');}
+    function closeWithdrawModal() { document.getElementById('withdraw-modal-bg').classList.remove('open'); }
 
-async function confirmWithdraw() {
-  const btn = document.getElementById('confirm-wd-btn');
-  btn.textContent = 'Submitting…'; btn.disabled = true;
-  try {
-    const pts = parseInt(document.getElementById('pts-input').value);
-    const data = await api('POST', '/api/agent/me/withdrawals', { pts });
-    if(data.agent) { AGENT = data.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); }
-    document.getElementById('pts-input').value = '';
-    closeWithdrawModal();
-    renderPortal();
-    await loadHistory();
-    document.getElementById('withdraw-success-modal-bg').classList.add('open');
-  } catch(e) { toast('❌ Error: ' + e.message); }
-  finally { btn.textContent = 'Submit Request'; btn.disabled = false; }
-}
+    async function confirmWithdraw() {
+      const btn = document.getElementById('confirm-wd-btn');
+      btn.textContent = 'Submitting…'; btn.disabled = true;
+      try {
+        const pts = parseInt(document.getElementById('pts-input').value);
+        const data = await api('POST', '/api/agent/me/withdrawals', { pts });
+        if (data.agent) { AGENT = data.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); }
+        document.getElementById('pts-input').value = '';
+        closeWithdrawModal();
+        renderPortal();
+        await loadHistory();
+        document.getElementById('withdraw-success-modal-bg').classList.add('open');
+      } catch (e) { toast('❌ Error: ' + e.message); }
+      finally { btn.textContent = 'Submit Request'; btn.disabled = false; }
+    }
 
-function closeWithdrawSuccessModal(){document.getElementById('withdraw-success-modal-bg').classList.remove('open');switchInnerTab('history');}
+    function closeWithdrawSuccessModal() { document.getElementById('withdraw-success-modal-bg').classList.remove('open'); switchInnerTab('history'); }
 
-/* ══════════════════════════════════
-   SIMULATE
-══════════════════════════════════ */
-async function simulateReferral() {
-  const btn = document.getElementById('sim-btn');
-  btn.textContent = 'Simulating…'; btn.disabled = true;
-  try {
-    const data = await api('POST', '/api/agent/me/simulate', {});
-    if(data.agent) { AGENT = data.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); }
-    renderPortal();
-    await loadHistory();
-    toast('🎉 Payment received! +1000 points credited.');
-  } catch(e) { toast('❌ ' + e.message); }
-  finally { btn.textContent = '+ Simulate Payment Received (1000 pts)'; btn.disabled = false; }
-}
+    /* ══════════════════════════════════
+       SIMULATE
+    ══════════════════════════════════ */
+    async function simulateReferral() {
+      const btn = document.getElementById('sim-btn');
+      btn.textContent = 'Simulating…'; btn.disabled = true;
+      try {
+        const data = await api('POST', '/api/agent/me/simulate', {});
+        if (data.agent) { AGENT = data.agent; localStorage.setItem('sda_agent_data', JSON.stringify(AGENT)); }
+        renderPortal();
+        await loadHistory();
+        toast('🎉 Payment received! +1000 points credited.');
+      } catch (e) { toast('❌ ' + e.message); }
+      finally { btn.textContent = '+ Simulate Payment Received (1000 pts)'; btn.disabled = false; }
+    }
 
-/* ══════════════════════════════════
-   TABLES
-══════════════════════════════════ */
-function renderReferralTable(refs) {
-  const tbody = document.getElementById('referral-body');
-  if(!refs||refs.length===0){tbody.innerHTML='<tr><td colspan="6" class="pending-empty">No referrals yet</td></tr>';return;}
-  tbody.innerHTML = refs.map(r=>`
+    /* ══════════════════════════════════
+       TABLES
+    ══════════════════════════════════ */
+    function renderReferralTable(refs) {
+      const tbody = document.getElementById('referral-body');
+      if (!refs || refs.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="pending-empty">No referrals yet</td></tr>'; return; }
+      tbody.innerHTML = refs.map(r => `
     <tr>
       <td><div style="font-weight:600;">${r.studentName}</div><div style="font-size:0.71rem;color:var(--muted)">${r.studentEmail}</div></td>
       <td>${r.date}</td><td>${r.plan}</td>
       <td style="font-weight:700;">${r.paid}</td>
       <td><span class="status-badge badge-paid">✓ Paid</span></td>
-      <td class="pts-plus">+${(r.pts||1000).toLocaleString()} pts</td>
+      <td class="pts-plus">+${(r.pts || 1000).toLocaleString()} pts</td>
     </tr>`).join('');
-}
+    }
 
-function renderTxnTable(txns) {
-  const SM = {credited:'<span class="status-badge badge-credited">✓ Credited</span>',processing:'<span class="status-badge badge-processing">⏳ Processing</span>',completed:'<span class="status-badge badge-paid">✓ Paid</span>',rejected:'<span class="status-badge badge-rejected">✗ Rejected</span>'};
-  const tbody = document.getElementById('txn-body');
-  if(!txns||txns.length===0){tbody.innerHTML='<tr><td colspan="6" class="pending-empty">No transactions yet</td></tr>';return;}
-  tbody.innerHTML = txns.map(t=>`
+    function renderTxnTable(txns) {
+      const SM = { credited: '<span class="status-badge badge-credited">✓ Credited</span>', processing: '<span class="status-badge badge-processing">⏳ Processing</span>', completed: '<span class="status-badge badge-paid">✓ Paid</span>', rejected: '<span class="status-badge badge-rejected">✗ Rejected</span>' };
+      const tbody = document.getElementById('txn-body');
+      if (!txns || txns.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="pending-empty">No transactions yet</td></tr>'; return; }
+      tbody.innerHTML = txns.map(t => `
     <tr>
       <td style="color:var(--muted);font-size:0.76rem;">${t.id}</td>
       <td>${t.date}</td>
-      <td><div style="font-weight:600;">${t.desc}</div><div style="font-size:0.71rem;color:var(--muted)">${t.subdesc||''}</div></td>
-      <td class="${(t.pts+'').startsWith('+')?'pts-plus':'pts-minus'}">${t.pts}</td>
-      <td style="font-weight:700;color:${(t.pts+'').startsWith('+')?'var(--green)':'var(--rose)'}">${t.money}</td>
-      <td>${SM[t.status]||''}</td>
+      <td><div style="font-weight:600;">${t.desc}</div><div style="font-size:0.71rem;color:var(--muted)">${t.subdesc || ''}</div></td>
+      <td class="${(t.pts + '').startsWith('+') ? 'pts-plus' : 'pts-minus'}">${t.pts}</td>
+      <td style="font-weight:700;color:${(t.pts + '').startsWith('+') ? 'var(--green)' : 'var(--rose)'}">${t.money}</td>
+      <td>${SM[t.status] || ''}</td>
     </tr>`).join('');
-}
+    }
 
-function renderPendingTable(wrs) {
-  const tbody = document.getElementById('pending-body');
-  const all = (wrs||[]);
-  if(all.length===0){tbody.innerHTML='<tr><td colspan="5" class="pending-empty">No requests</td></tr>';return;}
-  tbody.innerHTML = all.map(r=>{
-    const badge = r.status==='approved'?'<span class="status-badge badge-paid">✓ Approved</span>':r.status==='rejected'?'<span class="status-badge badge-rejected">✗ Rejected</span>':'<span class="status-badge badge-processing">⏳ Processing</span>';
-    return `<tr>
+    function renderPendingTable(wrs) {
+      const tbody = document.getElementById('pending-body');
+      const all = (wrs || []);
+      if (all.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="pending-empty">No requests</td></tr>'; return; }
+      tbody.innerHTML = all.map(r => {
+        const badge = r.status === 'approved' ? '<span class="status-badge badge-paid">✓ Approved</span>' : r.status === 'rejected' ? '<span class="status-badge badge-rejected">✗ Rejected</span>' : '<span class="status-badge badge-processing">⏳ Processing</span>';
+        return `<tr>
       <td style="font-weight:700;color:var(--teal);font-size:0.8rem;">${r.id}</td>
       <td class="pts-pending">⭐ ${parseInt(r.pts).toLocaleString()} pts</td>
       <td style="font-weight:700;">${r.amount}</td>
       <td style="color:var(--muted);font-size:0.78rem;">${r.date}</td>
       <td>${badge}</td>
     </tr>`;
-  }).join('');
-}
+      }).join('');
+    }
 
-/* ══════════════════════════════════
-   SHARE / COPY
-══════════════════════════════════ */
-function getCode(){return AGENT?.code||'—';}
-function getLink(){return `https://shaheendigital.in/join?ref=${getCode()}`;}
-function copyCode(){navigator.clipboard.writeText(getCode()).catch(()=>{});const btn=document.getElementById('copy-btn');btn.classList.add('copied');btn.innerHTML=`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;toast('✓ Referral code copied!');setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML=`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;},2500);}
-function copyLink(){navigator.clipboard.writeText(getLink()).catch(()=>{});toast('✓ Referral link copied!');}
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('🎓 Join SDA with my referral code '+getCode()+' and get exclusive discounts!\n\n'+getLink()),'_blank');}
-function shareSMS(){window.location.href='sms:?body=Join SDA with code '+getCode()+' for exclusive discounts! '+getLink();}
+    /* ══════════════════════════════════
+       SHARE / COPY
+    ══════════════════════════════════ */
+    function getCode() { return AGENT?.code || '—'; }
+    function getLink() { return `https://shaheendigital.in/join?ref=${getCode()}`; }
+    function copyCode() { navigator.clipboard.writeText(getCode()).catch(() => { }); const btn = document.getElementById('copy-btn'); btn.classList.add('copied'); btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`; toast('✓ Referral code copied!'); setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`; }, 2500); }
+    function copyLink() { navigator.clipboard.writeText(getLink()).catch(() => { }); toast('✓ Referral link copied!'); }
+    function shareWA() { window.open('https://wa.me/?text=' + encodeURIComponent('🎓 Join SDA with my referral code ' + getCode() + ' and get exclusive discounts!\n\n' + getLink()), '_blank'); }
+    function shareSMS() { window.location.href = 'sms:?body=Join SDA with code ' + getCode() + ' for exclusive discounts! ' + getLink(); }
 
-/* ══════════════════════════════════
-   MATERIALS
-══════════════════════════════════ */
-const PLANS = [
-  {id:'neet-premium',cat:'neet',emoji:'🔬',thumbClass:'thumb-neet-premium',label:'NEET',badge:{text:'POPULAR',type:'new'},title:'SDA Premium Plan',subtitle:'NEET — Class XI / XII / Droppers',categoryColor:'#2bbfbf',price:5999,discountedPrice:5499,commission:1000,desc:'A future-ready NEET plan—ideal for 2027 aspirants, effective for 2026 too.',features:['✅ Shaheen\'s structured year long study plan','✅ 2000+ Revision lectures by top educators','✅ 3,00,000+ MCQs with AI-based approaches','✅ 3,000+ curated Daily Practice Papers','✅ 24/7 Ask AI Doubt Support','✅ Performance Analytics Dashboard','✅ Parent Dashboard','❌ Premium study materials','❌ Tablet Device'],shareMsg:(code)=>`🔬 *SDA Premium Plan — NEET*\n\n✅ 2000+ Revision lectures\n✅ 3,00,000+ MCQs with AI approaches\n✅ 24/7 Ask AI Doubt Support\n✅ Parent Dashboard\n\n💰 *Price:* ~~₹5,999~~ → *₹5,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}\n\n_Shaheen Digital Academy_`},
-  {id:'neet-elite',cat:'neet',emoji:'🏆',thumbClass:'thumb-neet-elite',label:'NEET',badge:{text:'ELITE',type:'elite'},title:'SDA Elite Plan',subtitle:'NEET — Class XI / XII / Droppers',categoryColor:'#8b5cf6',price:11999,discountedPrice:11499,commission:1000,desc:'NEET Excellence with Premium Study Resources.',features:['✅ Everything in Premium Plan','✅ Shaheen\'s premium study materials (Soft & Hard)','❌ Tablet Device'],shareMsg:(code)=>`🏆 *SDA Elite Plan — NEET*\n\n✅ Everything in Premium\n✅ Shaheen's premium study materials\n\n💰 *Price:* ~~₹11,999~~ → *₹11,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}`},
-  {id:'found-premium',cat:'foundation',emoji:'📚',thumbClass:'thumb-found-premium',label:'Foundation',badge:{text:'POPULAR',type:'new'},title:'SDA Foundation Premium',subtitle:'Class VI – X Students',categoryColor:'#2dc48d',price:3999,discountedPrice:3499,commission:1000,desc:'365 Days full access program for Class VI-X students.',features:['✅ 2000+ Revision lectures','✅ 1,000+ DPPs','✅ Olympiad examinations','✅ Parent Dashboard','✅ 24/7 Ask AI Doubt Support','❌ Premium study materials'],shareMsg:(code)=>`📚 *SDA Foundation Premium — Class VI to X*\n\n✅ 2000+ Revision lectures\n✅ 1,000+ DPPs\n✅ Olympiad examinations\n✅ Parent Dashboard\n\n💰 *Price:* ~~₹3,999~~ → *₹3,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}`},
-  {id:'found-elite',cat:'foundation',emoji:'🌟',thumbClass:'thumb-found-elite',label:'Foundation',badge:{text:'ELITE',type:'elite'},title:'SDA Foundation Elite',subtitle:'Class VI – X Students',categoryColor:'#9b59b6',price:6999,discountedPrice:6499,commission:1000,desc:'The premium foundation experience for Class VI–X students.',features:['✅ Everything in Foundation Premium','✅ Shaheen\'s Premium study materials'],shareMsg:(code)=>`🌟 *SDA Foundation Elite — Class VI to X*\n\n✅ Everything in Foundation Premium\n✅ Shaheen's Premium study materials\n\n💰 *Price:* ~~₹6,999~~ → *₹6,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}`}
-];
+    /* ══════════════════════════════════
+       MATERIALS
+    ══════════════════════════════════ */
+    const PLANS = [
+      { id: 'neet-premium', cat: 'neet', emoji: '🔬', thumbClass: 'thumb-neet-premium', label: 'NEET', badge: { text: 'POPULAR', type: 'new' }, title: 'SDA Premium Plan', subtitle: 'NEET — Class XI / XII / Droppers', categoryColor: '#2bbfbf', price: 5999, discountedPrice: 5499, commission: 1000, desc: 'A future-ready NEET plan—ideal for 2027 aspirants, effective for 2026 too.', features: ['✅ Shaheen\'s structured year long study plan', '✅ 2000+ Revision lectures by top educators', '✅ 3,00,000+ MCQs with AI-based approaches', '✅ 3,000+ curated Daily Practice Papers', '✅ 24/7 Ask AI Doubt Support', '✅ Performance Analytics Dashboard', '✅ Parent Dashboard', '❌ Premium study materials', '❌ Tablet Device'], shareMsg: (code) => `🔬 *SDA Premium Plan — NEET*\n\n✅ 2000+ Revision lectures\n✅ 3,00,000+ MCQs with AI approaches\n✅ 24/7 Ask AI Doubt Support\n✅ Parent Dashboard\n\n💰 *Price:* ~~₹5,999~~ → *₹5,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}\n\n_Shaheen Digital Academy_` },
+      { id: 'neet-elite', cat: 'neet', emoji: '🏆', thumbClass: 'thumb-neet-elite', label: 'NEET', badge: { text: 'ELITE', type: 'elite' }, title: 'SDA Elite Plan', subtitle: 'NEET — Class XI / XII / Droppers', categoryColor: '#8b5cf6', price: 11999, discountedPrice: 11499, commission: 1000, desc: 'NEET Excellence with Premium Study Resources.', features: ['✅ Everything in Premium Plan', '✅ Shaheen\'s premium study materials (Soft & Hard)', '❌ Tablet Device'], shareMsg: (code) => `🏆 *SDA Elite Plan — NEET*\n\n✅ Everything in Premium\n✅ Shaheen's premium study materials\n\n💰 *Price:* ~~₹11,999~~ → *₹11,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}` },
+      { id: 'found-premium', cat: 'foundation', emoji: '📚', thumbClass: 'thumb-found-premium', label: 'Foundation', badge: { text: 'POPULAR', type: 'new' }, title: 'SDA Foundation Premium', subtitle: 'Class VI – X Students', categoryColor: '#2dc48d', price: 3999, discountedPrice: 3499, commission: 1000, desc: '365 Days full access program for Class VI-X students.', features: ['✅ 2000+ Revision lectures', '✅ 1,000+ DPPs', '✅ Olympiad examinations', '✅ Parent Dashboard', '✅ 24/7 Ask AI Doubt Support', '❌ Premium study materials'], shareMsg: (code) => `📚 *SDA Foundation Premium — Class VI to X*\n\n✅ 2000+ Revision lectures\n✅ 1,000+ DPPs\n✅ Olympiad examinations\n✅ Parent Dashboard\n\n💰 *Price:* ~~₹3,999~~ → *₹3,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}` },
+      { id: 'found-elite', cat: 'foundation', emoji: '🌟', thumbClass: 'thumb-found-elite', label: 'Foundation', badge: { text: 'ELITE', type: 'elite' }, title: 'SDA Foundation Elite', subtitle: 'Class VI – X Students', categoryColor: '#9b59b6', price: 6999, discountedPrice: 6499, commission: 1000, desc: 'The premium foundation experience for Class VI–X students.', features: ['✅ Everything in Foundation Premium', '✅ Shaheen\'s Premium study materials'], shareMsg: (code) => `🌟 *SDA Foundation Elite — Class VI to X*\n\n✅ Everything in Foundation Premium\n✅ Shaheen's Premium study materials\n\n💰 *Price:* ~~₹6,999~~ → *₹6,499*\n🏷️ Use code *${code}* — SAVE ₹500!\n\n🔗 Enroll: https://shaheendigital.in/join?ref=${code}` }
+    ];
 
-function renderMaterialsGrid(cat) {
-  const container = document.getElementById('mat-grid-container');
-  function sectionHeader(t,s){return`<div class="plan-section-header"><div class="plan-section-line"></div><div class="plan-section-title">${t} · ${s}</div><div class="plan-section-line"></div></div>`;}
-  if(cat==='all'){
-    const neet=PLANS.filter(p=>p.cat==='neet'),found=PLANS.filter(p=>p.cat==='foundation');
-    container.innerHTML=sectionHeader('🔬 NEET Plans','For Class XI / XII / Droppers')+`<div class="mat-grid">${neet.map(planCard).join('')}</div>`+sectionHeader('📚 Foundation Plans','For Class VI – X')+`<div class="mat-grid">${found.map(planCard).join('')}</div>`;
-  } else {
-    container.innerHTML=`<div class="mat-grid">${PLANS.filter(p=>p.cat===cat).map(planCard).join('')}</div>`;
-  }
-}
-function planCard(p){
-  const badge=p.badge.type==='elite'?`<div class="thumb-elite-badge">👑 ${p.badge.text}</div>`:`<div class="thumb-new">⭐ ${p.badge.text}</div>`;
-  return`<div class="mat-card"><div class="mat-card-thumb ${p.thumbClass}"><div class="thumb-label">${p.label}</div>${badge}<div class="thumb-emoji">${p.emoji}</div></div>
+    function renderMaterialsGrid(cat) {
+      const container = document.getElementById('mat-grid-container');
+      function sectionHeader(t, s) { return `<div class="plan-section-header"><div class="plan-section-line"></div><div class="plan-section-title">${t} · ${s}</div><div class="plan-section-line"></div></div>`; }
+      if (cat === 'all') {
+        const neet = PLANS.filter(p => p.cat === 'neet'), found = PLANS.filter(p => p.cat === 'foundation');
+        container.innerHTML = sectionHeader('🔬 NEET Plans', 'For Class XI / XII / Droppers') + `<div class="mat-grid">${neet.map(planCard).join('')}</div>` + sectionHeader('📚 Foundation Plans', 'For Class VI – X') + `<div class="mat-grid">${found.map(planCard).join('')}</div>`;
+      } else {
+        container.innerHTML = `<div class="mat-grid">${PLANS.filter(p => p.cat === cat).map(planCard).join('')}</div>`;
+      }
+    }
+    function planCard(p) {
+      const badge = p.badge.type === 'elite' ? `<div class="thumb-elite-badge">👑 ${p.badge.text}</div>` : `<div class="thumb-new">⭐ ${p.badge.text}</div>`;
+      return `<div class="mat-card"><div class="mat-card-thumb ${p.thumbClass}"><div class="thumb-label">${p.label}</div>${badge}<div class="thumb-emoji">${p.emoji}</div></div>
   <div class="mat-card-body"><div class="mat-card-title">${p.title}</div><div class="mat-card-category" style="color:${p.categoryColor}">${p.subtitle}</div>
   <div class="mat-card-price"><span class="strike">₹${p.price.toLocaleString('en-IN')}</span><strong style="color:${p.categoryColor}">₹${p.discountedPrice.toLocaleString('en-IN')}</strong><span class="disc">SAVE ₹500</span></div>
   <div style="font-size:0.7rem;font-weight:600;color:var(--muted);margin-bottom:9px;">You earn: <strong style="color:var(--teal)">+${p.commission.toLocaleString('en-IN')} pts (₹${p.commission.toLocaleString('en-IN')})</strong></div>
   <div class="mat-card-desc">${p.desc}</div>
-  <div class="mat-card-features">${p.features.map(f=>`<div class="mat-feat">${f}</div>`).join('')}</div>
+  <div class="mat-card-features">${p.features.map(f => `<div class="mat-feat">${f}</div>`).join('')}</div>
   <div class="mat-card-actions">
     <button class="mat-action-btn mat-btn-wa" onclick="quickShareWA('${p.id}')">💬 WhatsApp</button>
     <button class="mat-action-btn mat-btn-secondary" onclick="openMatShareModal('${p.id}')">↗ More</button>
   </div></div></div>`;
-}
-function filterPlanCat(cat,btn){document.querySelectorAll('.plan-cat-tab').forEach(b=>{b.className='plan-cat-tab';});btn.className='plan-cat-tab active-'+cat;renderMaterialsGrid(cat);}
-function quickShareWA(id){const p=PLANS.find(x=>x.id===id);if(!p)return;window.open('https://wa.me/?text='+encodeURIComponent(p.shareMsg(getCode())),'_blank');toast('📲 Opening WhatsApp...');}
-function openMatShareModal(id){const p=PLANS.find(x=>x.id===id);if(!p)return;currentMatShare=p;document.getElementById('mat-modal-icon').textContent=p.emoji;document.getElementById('mat-modal-title').textContent='Share: '+p.title;document.getElementById('mat-preview-msg').textContent=p.shareMsg(getCode());document.getElementById('mat-share-options').innerHTML=`<button class="share-option-btn" onclick="shareMatWA()"><span class="share-option-icon">💬</span><span>WhatsApp</span></button><button class="share-option-btn" onclick="shareMatCopyMsg()"><span class="share-option-icon">📋</span><span>Copy Message</span></button><button class="share-option-btn" onclick="shareMatSMS()"><span class="share-option-icon">📱</span><span>SMS</span></button><button class="share-option-btn" onclick="shareMatCopyLink()"><span class="share-option-icon">🔗</span><span>Copy Link</span></button>`;document.getElementById('mat-share-modal-bg').classList.add('open');}
-function closeMatShareModal(){document.getElementById('mat-share-modal-bg').classList.remove('open');currentMatShare=null;}
-function shareMatWA(){if(!currentMatShare)return;window.open('https://wa.me/?text='+encodeURIComponent(currentMatShare.shareMsg(getCode())),'_blank');}
-function shareMatCopyMsg(){if(!currentMatShare)return;navigator.clipboard.writeText(currentMatShare.shareMsg(getCode())).catch(()=>{});toast('✓ Message copied!');}
-function shareMatSMS(){if(!currentMatShare)return;window.location.href='sms:?body='+encodeURIComponent(currentMatShare.shareMsg(getCode()));}
-function shareMatCopyLink(){navigator.clipboard.writeText(getLink()).catch(()=>{});toast('✓ Referral link copied!');}
+    }
+    function filterPlanCat(cat, btn) { document.querySelectorAll('.plan-cat-tab').forEach(b => { b.className = 'plan-cat-tab'; }); btn.className = 'plan-cat-tab active-' + cat; renderMaterialsGrid(cat); }
+    function quickShareWA(id) { const p = PLANS.find(x => x.id === id); if (!p) return; window.open('https://wa.me/?text=' + encodeURIComponent(p.shareMsg(getCode())), '_blank'); toast('📲 Opening WhatsApp...'); }
+    function openMatShareModal(id) { const p = PLANS.find(x => x.id === id); if (!p) return; currentMatShare = p; document.getElementById('mat-modal-icon').textContent = p.emoji; document.getElementById('mat-modal-title').textContent = 'Share: ' + p.title; document.getElementById('mat-preview-msg').textContent = p.shareMsg(getCode()); document.getElementById('mat-share-options').innerHTML = `<button class="share-option-btn" onclick="shareMatWA()"><span class="share-option-icon">💬</span><span>WhatsApp</span></button><button class="share-option-btn" onclick="shareMatCopyMsg()"><span class="share-option-icon">📋</span><span>Copy Message</span></button><button class="share-option-btn" onclick="shareMatSMS()"><span class="share-option-icon">📱</span><span>SMS</span></button><button class="share-option-btn" onclick="shareMatCopyLink()"><span class="share-option-icon">🔗</span><span>Copy Link</span></button>`; document.getElementById('mat-share-modal-bg').classList.add('open'); }
+    function closeMatShareModal() { document.getElementById('mat-share-modal-bg').classList.remove('open'); currentMatShare = null; }
+    function shareMatWA() { if (!currentMatShare) return; window.open('https://wa.me/?text=' + encodeURIComponent(currentMatShare.shareMsg(getCode())), '_blank'); }
+    function shareMatCopyMsg() { if (!currentMatShare) return; navigator.clipboard.writeText(currentMatShare.shareMsg(getCode())).catch(() => { }); toast('✓ Message copied!'); }
+    function shareMatSMS() { if (!currentMatShare) return; window.location.href = 'sms:?body=' + encodeURIComponent(currentMatShare.shareMsg(getCode())); }
+    function shareMatCopyLink() { navigator.clipboard.writeText(getLink()).catch(() => { }); toast('✓ Referral link copied!'); }
 
-/* ── UTILS ── */
-function dateStr(){return new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
-function setText(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3500);}
+    /* ── UTILS ── */
+    function dateStr() { return new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+    function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+    function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3500); }
 
-/* ── AUTO LOGIN ON LOAD ── */
-window.addEventListener('load', () => {
-  if(TOKEN && AGENT) initPortal();
-  else setApiStatus(true); // will detect properly on first call
-});
-</script>
+    /* ── AUTO LOGIN ON LOAD ── */
+    window.addEventListener('load', () => {
+      if (TOKEN && AGENT) initPortal();
+      else setApiStatus(true); // will detect properly on first call
+    });
+  </script>
 </body>
+
 </html>
